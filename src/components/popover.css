@@ -1,8 +1,9 @@
 /**
  * @block popover
  * @purpose A panel over the page for settings or detail: an ink border, a soft shadow, a display title and
- *   a quiet Close. On a dialog element it is modal; on an element with the popover attribute it is light
- *   and closes when you click away. Both open and close with no JavaScript.
+ *   a quiet Close. On a dialog element it is modal and dims the page; on an element with the popover
+ *   attribute it is light: the page stays as it is, and it closes when you click away. Both open and close
+ *   with no JavaScript.
  * @markup
  *   <button type="button" class="button" commandfor="{{id}}" command="show-modal">Other models</button>
  *   <dialog class="popover" id="{{id}}" aria-labelledby="{{id}}-title">
@@ -36,7 +37,8 @@
     overscroll-behavior: contain;
   }
 
-  .popover::backdrop {
+  /* Only a modal dialog dims the page; a popover-attribute panel sits over it as it is. */
+  .popover:not([popover])::backdrop {
     background-color: var(--backdrop);
   }
 

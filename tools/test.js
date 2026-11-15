@@ -132,6 +132,53 @@ test('a dialog opens from its button and closes from its Close, with no script o
   await context.close();
 });
 
+test('a disclosure opens from its summary with no script, and its mark is drawn on whole pixels', async () => {
+  for (const path of ['/specimen/', '/specimen/tool.html']) {
+    const { page, context } = await open(path, { javaScriptEnabled: false });
+    const details = '[data-specimen="block-disclosure"] details:not([open])';
+    const mark = await page.$eval(details + ' > summary', s => parseFloat(getComputedStyle(s, '::before').width));
+    assert.ok(Number.isInteger(mark) && mark % 2 === 1, `${path}: the mark is ${mark}px wide; an odd whole number keeps its 1px lines sharp`);
+    const first = await page.$(details);
+    await (await first.$('summary')).click();
+    assert.equal(await first.evaluate(d => d.open), true);
+    await context.close();
+  }
+});
+
+test('a pressed button and a pressed chip are filled ink', async () => {
+  const { page, context } = await open('/specimen/');
+  const paint = sel => page.$eval(sel, el => {
+    const s = getComputedStyle(el), body = getComputedStyle(document.body);
+    return { filled: s.backgroundColor === body.color, text: s.color === body.backgroundColor };
+  });
+  assert.deepEqual(await paint('[data-specimen="block-button"] .button[aria-pressed="true"]'), { filled: true, text: true });
+  assert.deepEqual(await paint('[data-specimen="block-chip"] .chip[aria-pressed="true"]'), { filled: true, text: true });
+  assert.deepEqual(await paint('[data-specimen="block-chip"] button.chip:not([aria-pressed])'), { filled: false, text: false });
+  await context.close();
+});
+
+test('only a modal dialog dims the page; a popover-attribute panel leaves it as it is', async () => {
+  const { page, context } = await open('/specimen/');
+  const scrim = await page.evaluate(() => {
+    const panel = document.createElement('div');
+    panel.className = 'popover';
+    panel.popover = 'manual';
+    panel.textContent = 'A light panel';
+    document.body.append(panel);
+    panel.showPopover();
+    const light = getComputedStyle(panel, '::backdrop').backgroundColor;
+    panel.remove();
+    const dialog = document.querySelector('[data-specimen="block-popover"] dialog');
+    dialog.showModal();
+    const modal = getComputedStyle(dialog, '::backdrop').backgroundColor;
+    dialog.close();
+    return { light, modal };
+  });
+  assert.equal(scrim.light, 'rgba(0, 0, 0, 0)');
+  assert.equal(scrim.modal, 'rgba(0, 0, 0, 0.4)');
+  await context.close();
+});
+
 for (const scheme of ['light', 'dark']) {
   test(`accessibility (axe, WCAG 2.1 AA) in ${scheme}`, async () => {
     const { page, context } = await open('/specimen/', { colorScheme: scheme });

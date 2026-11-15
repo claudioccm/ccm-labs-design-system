@@ -1,0 +1,33 @@
+/**
+ * @block facts
+ * @purpose A short list of names and their values in two columns: what a routine uses, a project's year
+ *   and role, the keys a record is tied to. On a dl, so each value is read with its name.
+ * @markup
+ *   <dl class="facts">
+ *     <dt>Runs</dt>
+ *     <dd>Every weekday at 05:00</dd>
+ *     <dt>Uses</dt>
+ *     <dd>Mail, the calendar and the task tracker</dd>
+ *   </dl>
+ * @props
+ *   --facts-name — The width of the names' column. Default: 6rem.
+ * @tokens --space-2xs --space-s --muted
+ * @do Add the label block to a dt for small uppercase names.
+ * @dont Use it for a table of records; several rows of the same columns are a table.
+ */
+@layer components {
+  .facts {
+    display: grid;
+    grid-template-columns: var(--facts-name, 6rem) minmax(0, 1fr);
+    align-items: baseline;
+    gap: var(--space-2xs) var(--space-s);
+  }
+
+  .facts > dt {
+    color: var(--muted);
+  }
+
+  .facts > dd {
+    overflow-wrap: anywhere;
+  }
+}

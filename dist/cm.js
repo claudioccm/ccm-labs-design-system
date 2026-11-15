@@ -1,4 +1,4 @@
-/*! ccm-labs-design-system v0.1.0 — github.com/claudioccm/ccm-labs-design-system — built from src/, do not edit */
+/*! ccm-labs-design-system v0.2.0 — github.com/claudioccm/ccm-labs-design-system — built from src/, do not edit */
 (() => {
 /**
  * Flips the page between the light look and its dark twin, and remembers the choice in this browser.

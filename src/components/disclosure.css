@@ -1,0 +1,59 @@
+/**
+ * @block disclosure
+ * @purpose A details element whose summary carries a drawn plus that becomes a minus when it is open, in
+ *   place of the browser's triangle. For a row or a section that folds away.
+ * @markup
+ *   <details class="disclosure" {{state}}>
+ *     <summary>Brief and tags</summary>
+ *     <p>What this board is for, what to take from it, what to ignore.</p>
+ *   </details>
+ * @states
+ *   data-mark="end" — The mark sits at the far end of the summary instead of before its text.
+ *   open — The native attribute: the content shows and the mark is a minus.
+ * @props
+ *   --disclosure-size — The mark's width and height, rounded to an odd number of pixels so its lines stay sharp. Default: 0.75em.
+ * @tokens --space-xs --muted
+ * @do Give several details the same name attribute when only one should be open at a time.
+ * @dont Open or close it from a script; the native element answers clicks, Enter and Space already.
+ */
+@layer components {
+  .disclosure > summary {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-xs);
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .disclosure > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* One box, cut to a plus: two 1px bars through its centre. An odd size puts them on whole pixels. */
+  .disclosure > summary::before {
+    --_size: calc(round(down, var(--disclosure-size, 0.75em), 2px) + 1px);
+    --_half: calc(50% - 0.5px);
+    --_rest: calc(50% + 0.5px);
+
+    content: "";
+    flex: none;
+    align-self: center;
+    inline-size: var(--_size);
+    block-size: var(--_size);
+    background-color: var(--muted);
+    clip-path: polygon(
+      0 var(--_half), var(--_half) var(--_half), var(--_half) 0, var(--_rest) 0,
+      var(--_rest) var(--_half), 100% var(--_half), 100% var(--_rest), var(--_rest) var(--_rest),
+      var(--_rest) 100%, var(--_half) 100%, var(--_half) var(--_rest), 0 var(--_rest)
+    );
+  }
+
+  .disclosure[open] > summary::before {
+    clip-path: inset(var(--_half) 0);
+  }
+
+  .disclosure[data-mark="end"] > summary::before {
+    order: 1;
+    margin-inline-start: auto;
+  }
+}

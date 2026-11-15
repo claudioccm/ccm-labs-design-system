@@ -1,6 +1,6 @@
 # CM Design System: principles
 
-Started 2026-11-15; v0.1.0 is built on it. Each principle is marked **Agreed**, **Proposed** or **Open**.
+Started 2026-11-15; v0.1.0 was built on it and v0.2.0 followed the first three adoptions. Each principle is marked **Agreed**, **Proposed** or **Open**.
 Agreed items change only with a reason written down here. How to apply them day to day is in `AGENTS.md`.
 
 ## What this is
@@ -176,9 +176,9 @@ Start with GitHub alone; add npm only if it starts to hurt:
 
 | Consumer | How it gets the system |
 | --- | --- |
-| Nuxt, Astro, Vite projects | Git dependency on a tag: `github:claudioccm/ccm-labs-design-system#v0.1.0` |
-| Plain HTML pages | jsDelivr's GitHub route: `https://cdn.jsdelivr.net/gh/claudioccm/ccm-labs-design-system@0.1/dist/cm.css` |
-| Apps that must work offline | A pinned copy of `dist/` kept in the project and refreshed by a script, never edited |
+| Nuxt, Astro, Vite projects | Git dependency on a tag: `github:claudioccm/ccm-labs-design-system#v0.2.0`, imported as the first line of the project's own stylesheet |
+| Plain HTML pages | jsDelivr's GitHub route: `https://cdn.jsdelivr.net/gh/claudioccm/ccm-labs-design-system@0.2/dist/cm.css` |
+| Apps that must work offline, or that allow no outside script | A pinned copy of `dist/` kept in the project and refreshed by a script, never edited |
 
 - The built files (`dist/`, the specimen, `llms.txt`) are committed with the source, so every tag works on
   both routes with no build step for the consumer. CI rebuilds and fails if they are stale.
@@ -221,6 +221,37 @@ A shortlist to borrow behaviour and patterns from. Each needs a "what we take" b
 - 2026-11-15 — State colours are named by role: `--ok`, `--ask`, `--trouble` (was `--red`). `--ok-ink` and
   `--ask-ink` are darker shades for text, since the plain teal and yellow fail contrast on paper.
 - 2026-11-15 — The theme choice is stored under `cm-theme` in every project.
+- 2026-11-15 — v0.2.0, from migrating the command center dashboard and _refs. Five blocks passed the
+  two-projects rule: `titlebar` (the command center's list heads, _refs's view head), `disclosure` (the plus
+  and minus on both projects' details), `chip` (the command center's dependency chips, claudiomendonca.com's
+  filters), `facts` (the command center's Using and Used by, claudiomendonca.com's project facts) and `link`
+  (both wrote the link look again for links that carry a class). `button` gained `aria-pressed="true"` (_refs's
+  selected buttons, claudiomendonca.com's pressed chip).
+- 2026-11-15 — Considered and left out: a bordered message (the command center's banner is red and in the
+  flow, _refs's status line is ink and floats; they share a border and nothing else), rename in place and the
+  dimmed dragged row (behaviour and one declaration each), a ring-shaped dot and a vertical nav (one project
+  each).
+- 2026-11-15 — Only a modal dialog dims the page. v0.1.0 put the scrim on every `popover`, so a
+  popover-attribute panel dimmed the page too; the command center's routine popover, which the block was drawn
+  from, never did.
+- 2026-11-15 — The disclosure's mark is one box cut to a plus with `clip-path`, not two gradients (the look
+  has none) and not two pseudo-elements (a summary laid out on a grid needs the mark to be one item). Its size
+  is rounded to an odd number of pixels so its two 1px lines fall on whole pixels.
+- 2026-11-15 — A project with a bundler imports the system as the first line of its own stylesheet. Listed as
+  a separate entry, Nuxt's dev server loaded _refs's stylesheet first, which declared `overrides` before the
+  system's layer statement and so put it below every other layer.
+- 2026-11-15 — _refs ships the stylesheet as its bundler rewrites it: Lightning CSS turns `light-dark()` into
+  a custom-property switch for older browsers. The page's light and dark work the same; a surface pinned
+  with `data-theme` would not, and _refs has none. A project that pins one raises its CSS target instead.
+- 2026-11-15 — A pinned copy is also for a page whose content security policy allows no outside script (the
+  command center dashboard: `script-src 'self'`), and it includes `theme-init.js`, which cannot be inlined
+  there.
+- 2026-11-15 — Where an adopter's look differs from the house look, the adopter keeps its own in its
+  `overrides` layer, each rule marked, and the difference goes to Claudio to decide. A migration never changes
+  how a project looks. _refs pins the palette, type sizes and spacing it had; the command center keeps its
+  dotted row rules, inverting buttons, Switzer popover title and pale asking dot.
+- 2026-11-15 — The system's class names stay plain words, so an adopter renames its own on a collision
+  (_refs's `sidebar` became `app-sidebar`).
 
 ## Parked
 

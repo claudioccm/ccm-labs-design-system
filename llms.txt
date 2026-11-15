@@ -1,6 +1,6 @@
 # ccm-labs-design-system
 
-> The house design system for Claudio's pet projects: CUBE CSS, Utopia tokens, Every Layout composition and light-DOM custom elements. Version 0.1.0.
+> The house design system for Claudio's pet projects: CUBE CSS, Utopia tokens, Every Layout composition and light-DOM custom elements. Version 0.2.0.
 
 The contract is HTML: class names, data attributes and the tokens a block reads. Read AGENTS.md before
 writing markup; it holds the rules and the head snippet. Each entry below is documented in a header comment
@@ -50,12 +50,17 @@ at the top of its source file. llms-full.txt has every header in one file.
 - [label](src/components/label.css): The small uppercase label: field names, column heads, section heads. With data-rule it is a section head, a label over a 1px rule.
 - [display](src/components/display.css): The display face, Montagu Slab Light, on anything that is not an h1: an app name, a dialog title, a big numeral.
 - [button](src/components/button.css): An action. A view has one primary button, filled ink; everything secondary is a quiet text button. Works on a button or a link.
+- [link](src/components/link.css): The link look, ink over a 1px rule and muted on hover, for a link that carries a class (the classless default does not reach it) and for a button that reads as a link.
 - [field](src/components/field.css): A form control with its name. Wrap the control in a label so no id is needed. A checkbox or radio sits beside its text, which is muted until hovered.
 - [dot](src/components/dot.css): A small round status dot. Colour means state only: teal for ok or live, yellow for asking or loading, red for trouble, muted grey for idle.
 - [toolbar](src/components/toolbar.css): A row of controls over a rule, between a view's title and its content. It wraps on a narrow screen.
 - [nav](src/components/nav.css): A row of links between a site's or a tool's views. The current view is ink over a rule; the others are muted.
-- [popover](src/components/popover.css): A panel over the page for settings or detail: an ink border, a soft shadow, a display title and a quiet Close. On a dialog element it is modal; on an element with the popover attribute it is light and closes when you click away. Both open and close with no JavaScript.
+- [popover](src/components/popover.css): A panel over the page for settings or detail: an ink border, a soft shadow, a display title and a quiet Close. On a dialog element it is modal and dims the page; on an element with the popover attribute it is light: the page stays as it is, and it closes when you click away. Both open and close with no JavaScript.
 - [theme-toggle](src/components/theme-toggle.css): The half-filled circle, top right, that flips the page between the light look and its dark twin. The button inside a cm-theme-toggle element, which gives it its behaviour.
+- [titlebar](src/components/titlebar.css): A view's or a list's title row: the title, then a count or controls, over an ink rule. It wraps on a narrow screen. For a row of controls with no title, see toolbar.
+- [disclosure](src/components/disclosure.css): A details element whose summary carries a drawn plus that becomes a minus when it is open, in place of the browser's triangle. For a row or a section that folds away.
+- [chip](src/components/chip.css): A small boxed word: a tag, a dependency, a filter. On a span it is a fact, in muted text; on a link or a button it is an action, in ink, and a pressed or current one is filled.
+- [facts](src/components/facts.css): A short list of names and their values in two columns: what a routine uses, a project's year and role, the keys a record is tied to. On a dl, so each value is read with its name.
 
 ## Custom elements
 

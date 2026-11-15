@@ -27,7 +27,7 @@ npm run verify   # build, check and browser tests
 `dist/`, `specimen/`, `llms.txt`, `llms-full.txt` and `custom-elements.json` are generated and committed, so a
 project can load a release straight from GitHub or jsDelivr. See [AGENTS.md](AGENTS.md) before changing anything.
 
-## What is in v0.1.0
+## What is in v0.2.0
 
 | Layer | Contents |
 | --- | --- |
@@ -35,6 +35,6 @@ project can load a release straight from GitHub or jsDelivr. See [AGENTS.md](AGE
 | Theme | Colour roles for light and dark, following the system or pinned per surface |
 | Base | Reset, page, typography, form controls, tables |
 | Composition | stack, cluster, center, sidebar, switcher, grid, cover, frame, reel, imposter |
-| Blocks | label, display, button, field, dot, toolbar, nav, popover, theme-toggle |
+| Blocks | label, display, button, link, field, dot, toolbar, nav, popover, theme-toggle, titlebar, disclosure, chip, facts |
 | Elements | `cm-theme-toggle` |
 | Utilities | visually-hidden, tone, tabular, measure |

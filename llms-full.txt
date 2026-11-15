@@ -1,6 +1,6 @@
 # ccm-labs-design-system
 
-> The house design system for Claudio's pet projects: CUBE CSS, Utopia tokens, Every Layout composition and light-DOM custom elements. Version 0.1.0.
+> The house design system for Claudio's pet projects: CUBE CSS, Utopia tokens, Every Layout composition and light-DOM custom elements. Version 0.2.0.
 
 The contract is HTML: class names, data attributes and the tokens a block reads. Read AGENTS.md before
 writing markup; it holds the rules and the head snippet. Each entry below is documented in a header comment
@@ -449,6 +449,7 @@ Source: src/components/button.css
 States:
 - `data-variant="primary"`: Filled ink: the one main action in a view.
 - `data-variant="quiet"`: Muted text over a rule, turning to ink on hover: secondary actions such as Close or Undo.
+- `aria-pressed="true"`: A toggle that is on, or the chosen one of a few: filled ink.
 - `disabled`: Dimmed and not clickable. On a link, use aria-disabled="true".
 
 Tokens: `--control-pad-block` `--control-pad-inline` `--space-2xs` `--rule` `--bg` `--fg` `--hover` `--soft` `--muted` `--duration` `--ease`
@@ -456,6 +457,22 @@ Tokens: `--control-pad-block` `--control-pad-inline` `--space-2xs` `--rule` `--b
 Do: Write the label as a verb: Start, Save, Download and install.
 
 Don't: Put two primary buttons in one view, or use an ✕ where a quiet "Close" fits.
+
+### link
+
+The link look, ink over a 1px rule and muted on hover, for a link that carries a class (the classless default does not reach it) and for a button that reads as a link.
+
+Source: src/components/link.css
+
+```html
+<a class="link" href="#block-link">Full history</a>
+```
+
+Tokens: `--fg` `--muted` `--duration` `--ease`
+
+Do: Leave a link in running text with no class; it has this look already.
+
+Don't: Use it for a secondary action such as Close or Undo; that is the quiet button.
 
 ### field
 
@@ -548,7 +565,7 @@ Don't: Add an "active" class; assistive technology cannot read a class.
 
 ### popover
 
-A panel over the page for settings or detail: an ink border, a soft shadow, a display title and a quiet Close. On a dialog element it is modal; on an element with the popover attribute it is light and closes when you click away. Both open and close with no JavaScript.
+A panel over the page for settings or detail: an ink border, a soft shadow, a display title and a quiet Close. On a dialog element it is modal and dims the page; on an element with the popover attribute it is light: the page stays as it is, and it closes when you click away. Both open and close with no JavaScript.
 
 Source: src/components/popover.css
 
@@ -598,6 +615,99 @@ Without JavaScript: hidden — Without JavaScript the toggle is not shown and th
 Do: Put it at the end of the page's title row, once per page.
 
 Don't: Add a label next to it or a third "system" state; choosing the system's own look again forgets the choice.
+
+### titlebar
+
+A view's or a list's title row: the title, then a count or controls, over an ink rule. It wraps on a narrow screen. For a row of controls with no title, see toolbar.
+
+Source: src/components/titlebar.css
+
+```html
+<header class="titlebar">
+  <h2 class="display">Main quests</h2>
+  <span class="tone-muted tabular">4 open</span>
+  <button type="button" class="button" data-variant="quiet" data-push="end">Show all</button>
+</header>
+```
+
+Tokens: `--space-2xs` `--space-s` `--fg`
+
+Do: Add data-push="end" to the first thing that belongs at the far end.
+
+Don't: Put it under every heading; the ink rule marks the top of a view or of a list, once.
+
+### disclosure
+
+A details element whose summary carries a drawn plus that becomes a minus when it is open, in place of the browser's triangle. For a row or a section that folds away.
+
+Source: src/components/disclosure.css
+
+```html
+<details class="disclosure">
+  <summary>Brief and tags</summary>
+  <p>What this board is for, what to take from it, what to ignore.</p>
+</details>
+```
+
+States:
+- `data-mark="end"`: The mark sits at the far end of the summary instead of before its text.
+- `open`: The native attribute: the content shows and the mark is a minus.
+
+Properties:
+- `--disclosure-size`: The mark's width and height, rounded to an odd number of pixels so its lines stay sharp. Default: 0.75em.
+
+Tokens: `--space-xs` `--muted`
+
+Do: Give several details the same name attribute when only one should be open at a time.
+
+Don't: Open or close it from a script; the native element answers clicks, Enter and Space already.
+
+### chip
+
+A small boxed word: a tag, a dependency, a filter. On a span it is a fact, in muted text; on a link or a button it is an action, in ink, and a pressed or current one is filled.
+
+Source: src/components/chip.css
+
+```html
+<div class="cluster" data-space="2xs">
+  <span class="chip">launchd</span>
+  <a class="chip" href="#block-chip">Morning brief</a>
+  <button type="button" class="chip">Websites</button>
+</div>
+```
+
+States:
+- `aria-pressed="true"`: A filter that is on: filled ink. On a link, aria-current="page" does the same.
+
+Tokens: `--rule` `--muted` `--fg` `--bg` `--duration` `--ease`
+
+Do: Lay chips out with a cluster; a chip has no margin of its own.
+
+Don't: Colour chips by category; colour means state only.
+
+### facts
+
+A short list of names and their values in two columns: what a routine uses, a project's year and role, the keys a record is tied to. On a dl, so each value is read with its name.
+
+Source: src/components/facts.css
+
+```html
+<dl class="facts">
+  <dt>Runs</dt>
+  <dd>Every weekday at 05:00</dd>
+  <dt>Uses</dt>
+  <dd>Mail, the calendar and the task tracker</dd>
+</dl>
+```
+
+Properties:
+- `--facts-name`: The width of the names' column. Default: 6rem.
+
+Tokens: `--space-2xs` `--space-s` `--muted`
+
+Do: Add the label block to a dt for small uppercase names.
+
+Don't: Use it for a table of records; several rows of the same columns are a table.
 
 ## Custom elements
 

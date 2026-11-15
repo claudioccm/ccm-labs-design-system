@@ -20,16 +20,42 @@ page paints, and loads the stylesheet and the elements.
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montagu+Slab:opsz,wght@16..144,300&display=swap">
-<script src="https://cdn.jsdelivr.net/gh/claudioccm/ccm-labs-design-system@0.1/dist/theme-init.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/claudioccm/ccm-labs-design-system@0.1/dist/cm.css">
-<script src="https://cdn.jsdelivr.net/gh/claudioccm/ccm-labs-design-system@0.1/dist/cm.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/claudioccm/ccm-labs-design-system@0.2/dist/theme-init.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/claudioccm/ccm-labs-design-system@0.2/dist/cm.css">
+<script src="https://cdn.jsdelivr.net/gh/claudioccm/ccm-labs-design-system@0.2/dist/cm.js" defer></script>
 ```
 
-- **A project with a bundler** (Nuxt, Astro, Vite): `npm i github:claudioccm/ccm-labs-design-system#v0.1.0`,
-  then import `ccm-labs-design-system/cm.css` and `ccm-labs-design-system/cm.js`. Keep the font links and
-  `theme-init.js` in the head.
-- **An app that must work offline:** keep a pinned copy of `dist/cm.css` and `dist/cm.js` in the project and
-  refresh it with a script. The teleprompter does this (`update-cm.sh`). Never edit the copy.
+- **A project with a bundler** (Nuxt, Astro, Vite): `npm i github:claudioccm/ccm-labs-design-system#v0.2.0`.
+  - Import the stylesheet as the **first line of the project's own stylesheet**:
+    `@import "ccm-labs-design-system/cm.css";`, then write the project's rules below it in `@layer overrides`.
+    Do not list it as a separate entry beside the project's stylesheet: a bundler may load the two in either
+    order, and if the project's comes first its `overrides` layer is declared first and loses to everything.
+  - Import `ccm-labs-design-system/cm.js` once, in the browser only (in Nuxt, a `.client.ts` plugin).
+  - Put `theme-init.js` in the head, inline: read `ccm-labs-design-system/theme-init.js` at build time. Keep
+    the font links too, unless the project hosts Switzer itself.
+  - In Vue, tell the compiler the elements are not components:
+    `vue: { compilerOptions: { isCustomElement: (tag) => tag.startsWith('cm-') } }`.
+  - In Nuxt, all of it is a few lines of `nuxt.config.ts`:
+
+    ```ts
+    const themeInit = readFileSync(createRequire(import.meta.url).resolve('ccm-labs-design-system/theme-init.js'), 'utf8');
+    export default defineNuxtConfig({
+      app: { head: { htmlAttrs: { 'data-density': 'tool' }, script: [{ innerHTML: themeInit }] } },
+      css: ['~/assets/main.css'],   // its first line: @import "ccm-labs-design-system/cm.css";
+      vue: { compilerOptions: { isCustomElement: (tag) => tag.startsWith('cm-') } },
+    });
+    ```
+  - A build that rewrites `light-dark()` for older browsers (Vite with Lightning CSS does by default) keeps
+    the page's own light and dark working, but a surface pinned with `data-theme` on another element then
+    keeps the page's colours. A project that pins a surface sets its CSS target to browsers that have
+    `light-dark()` (Chrome 123, Safari 17.5, Firefox 120), so the function ships as written.
+- **An app that must work offline, or whose content security policy lets no script in from elsewhere:** keep a
+  pinned copy of `dist/cm.css`, `dist/cm.js` and `dist/theme-init.js` in the project and refresh it with a
+  script. The teleprompter does this (`update-cm.sh`). Never edit the copy.
+- **The class names are plain words** (`sidebar`, `grid`, `label`, `chip`, `link`, `nav`…). Before adopting the
+  system, check the project's own class names against the index below and rename the ones that collide.
+- **A choice saved under a project's old theme key** is carried over to `cm-theme` by the project, in a few
+  lines that run before `theme-init.js`.
 - **Dense tools** set `data-density="tool"` on `<html>`. Reading pages set nothing.
 - **A surface that is always dark** (a prompter, a player) sets `data-theme="dark"` on its own element.
 
@@ -45,6 +71,9 @@ page paints, and loads the stylesheet and the elements.
    `--rule`…). Sizes are `--text-*` roles or `--step-n`. Space is `--space-*`.
 5. **A project's own CSS goes in the `overrides` layer:** `@layer overrides { … }`. It wins over the system
    without `!important`. If the system itself needs to change, change it here, not in the project.
+   Where a project's look differs from the house look on purpose, it sets the system's own token or restyles
+   the system's own class there, with a comment that says what differs; deleting that rule takes the
+   system's look back.
 6. **Keep the look.** Ink on paper and its dark twin, square corners, solid 1px rules, colour only for
    state. No gradients, tinted panels, shadows other than the popover's, or brand accents.
 
@@ -190,12 +219,17 @@ Generated by `npm run build` from the headers. Do not edit between the markers.
 | `label` | `src/components/label.css` | The small uppercase label: field names, column heads, section heads. |
 | `display` | `src/components/display.css` | The display face, Montagu Slab Light, on anything that is not an h1: an app name, a dialog title, a big numeral. |
 | `button` | `src/components/button.css` | An action. |
+| `link` | `src/components/link.css` | The link look, ink over a 1px rule and muted on hover, for a link that carries a class (the classless default does not reach it) and for a button that reads as a link. |
 | `field` | `src/components/field.css` | A form control with its name. |
 | `dot` | `src/components/dot.css` | A small round status dot. |
 | `toolbar` | `src/components/toolbar.css` | A row of controls over a rule, between a view's title and its content. |
 | `nav` | `src/components/nav.css` | A row of links between a site's or a tool's views. |
 | `popover` | `src/components/popover.css` | A panel over the page for settings or detail: an ink border, a soft shadow, a display title and a quiet Close. |
 | `theme-toggle` | `src/components/theme-toggle.css` | The half-filled circle, top right, that flips the page between the light look and its dark twin. |
+| `titlebar` | `src/components/titlebar.css` | A view's or a list's title row: the title, then a count or controls, over an ink rule. |
+| `disclosure` | `src/components/disclosure.css` | A details element whose summary carries a drawn plus that becomes a minus when it is open, in place of the browser's triangle. |
+| `chip` | `src/components/chip.css` | A small boxed word: a tag, a dependency, a filter. |
+| `facts` | `src/components/facts.css` | A short list of names and their values in two columns: what a routine uses, a project's year and role, the keys a record is tied to. |
 
 **Custom elements**
 

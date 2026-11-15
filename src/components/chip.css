@@ -1,0 +1,48 @@
+/**
+ * @block chip
+ * @purpose A small boxed word: a tag, a dependency, a filter. On a span it is a fact, in muted text; on a
+ *   link or a button it is an action, in ink, and a pressed or current one is filled.
+ * @markup
+ *   <div class="cluster" data-space="2xs">
+ *     <span class="chip">launchd</span>
+ *     <a class="chip" href="#block-chip">Morning brief</a>
+ *     <button type="button" class="chip" {{state}}>Websites</button>
+ *   </div>
+ * @states
+ *   aria-pressed="true" — A filter that is on: filled ink. On a link, aria-current="page" does the same.
+ * @tokens --rule --muted --fg --bg --duration --ease
+ * @do Lay chips out with a cluster; a chip has no margin of its own.
+ * @dont Colour chips by category; colour means state only.
+ */
+@layer components {
+  .chip {
+    display: inline-block;
+    padding: 0.15em 0.6em;
+    border: 1px solid var(--rule);
+    border-radius: 0;
+    background-color: transparent;
+    color: var(--muted);
+    line-height: 1.5;
+    text-decoration: none;
+    transition:
+      background-color var(--duration) var(--ease),
+      border-color var(--duration) var(--ease),
+      color var(--duration) var(--ease);
+  }
+
+  :is(a, button).chip {
+    color: var(--fg);
+    cursor: pointer;
+  }
+
+  :is(a, button).chip:hover {
+    border-color: var(--fg);
+    background-color: transparent;
+  }
+
+  .chip:is([aria-pressed="true"], [aria-current="page"]) {
+    border-color: var(--fg);
+    background-color: var(--fg);
+    color: var(--bg);
+  }
+}

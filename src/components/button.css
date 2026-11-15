@@ -7,6 +7,7 @@
  * @states
  *   data-variant="primary" — Filled ink: the one main action in a view.
  *   data-variant="quiet" — Muted text over a rule, turning to ink on hover: secondary actions such as Close or Undo.
+ *   aria-pressed="true" — A toggle that is on, or the chosen one of a few: filled ink.
  *   disabled — Dimmed and not clickable. On a link, use aria-disabled="true".
  * @tokens --control-pad-block --control-pad-inline --space-2xs --rule --bg --fg --hover --soft --muted --duration --ease
  * @do Write the label as a verb: Start, Save, Download and install.
@@ -59,6 +60,13 @@
     border-color: var(--fg);
     background-color: transparent;
     color: var(--fg);
+  }
+
+  .button[aria-pressed="true"],
+  .button[aria-pressed="true"]:hover {
+    border-color: var(--fg);
+    background-color: var(--fg);
+    color: var(--bg);
   }
 
   .button:disabled,

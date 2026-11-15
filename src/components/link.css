@@ -1,0 +1,28 @@
+/**
+ * @block link
+ * @purpose The link look, ink over a 1px rule and muted on hover, for a link that carries a class (the
+ *   classless default does not reach it) and for a button that reads as a link.
+ * @markup
+ *   <a class="link" href="#block-link">Full history</a>
+ * @tokens --fg --muted --duration --ease
+ * @do Leave a link in running text with no class; it has this look already.
+ * @dont Use it for a secondary action such as Close or Undo; that is the quiet button.
+ */
+@layer components {
+  .link {
+    padding: 0;
+    border: 0;
+    border-block-end: 1px solid currentColor;
+    border-radius: 0;
+    background-color: transparent;
+    color: var(--fg);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color var(--duration) var(--ease);
+  }
+
+  .link:hover {
+    background-color: transparent;
+    color: var(--muted);
+  }
+}
