@@ -1,0 +1,32 @@
+/**
+ * @composition switcher
+ * @purpose Equal columns that all switch to a single column at once when the container gets narrower than
+ *   a threshold.
+ * @markup
+ *   <div class="switcher" {{state}}>
+ *     <div>One</div>
+ *     <div>Two</div>
+ *     <div>Three</div>
+ *   </div>
+ * @states
+ *   data-space="l" — The space between children. Default: m.
+ * @props
+ *   --switcher-threshold — The container width below which the children stack. Default: 30rem.
+ * @tokens --space-m
+ * @do Use it for two to four equal things; it never leaves one alone on a row.
+ * @dont Use it for a list of unknown length; that is grid.
+ */
+@layer composition {
+  .switcher {
+    --_space: var(--space-m);
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--_space);
+  }
+
+  .switcher > * {
+    flex-grow: 1;
+    flex-basis: calc((var(--switcher-threshold, 30rem) - 100%) * 999);
+  }
+}

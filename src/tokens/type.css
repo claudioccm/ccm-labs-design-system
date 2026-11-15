@@ -1,0 +1,63 @@
+/**
+ * @token type-scale
+ * @purpose Fluid type from utopia.fyi. Two scales share the --step-n names: "read" (the default: 16px to
+ *   17px body) for pages that are read, and data-density="tool" (12px to 14px body) for dense tools. Blocks
+ *   read the --text-* roles, which point at the right step in each scale, so a block never knows which scale
+ *   is active. Set data-density on the root, or on any element to switch one surface.
+ * @markup
+ *   <div data-density="tool" class="stack" data-space="2xs">
+ *     <p class="label">Tool density</p>
+ *     <p>The same markup at the dense scale, for a surface inside a reading page.</p>
+ *   </div>
+ * @render type
+ */
+@layer tokens {
+  :root,
+  [data-density="read"] {
+    /* utopia:type https://utopia.fyi/type/calculator?c=360,16,1.2,1440,17,1.25,9,2 */
+    --step--2: clamp(0.68rem, 0.6993rem + -0.0214vw, 0.6944rem);
+    --step--1: clamp(0.8333rem, 0.8278rem + 0.0247vw, 0.85rem);
+    --step-0: clamp(1rem, 0.9792rem + 0.0926vw, 1.0625rem);
+    --step-1: clamp(1.2rem, 1.1573rem + 0.1898vw, 1.3281rem);
+    --step-2: clamp(1.44rem, 1.3666rem + 0.3262vw, 1.6602rem);
+    --step-3: clamp(1.728rem, 1.6123rem + 0.5144vw, 2.0752rem);
+    --step-4: clamp(2.0736rem, 1.9001rem + 0.771vw, 2.594rem);
+    --step-5: clamp(2.4883rem, 2.2369rem + 1.1173vw, 3.2425rem);
+    --step-6: clamp(2.986rem, 2.6303rem + 1.5809vw, 4.0531rem);
+    --step-7: clamp(3.5832rem, 3.0888rem + 2.1974vw, 5.0664rem);
+    --step-8: clamp(4.2998rem, 3.6221rem + 3.0121vw, 6.333rem);
+    --step-9: clamp(5.1598rem, 4.241rem + 4.0836vw, 7.9162rem);
+    /* utopia:end */
+
+    --text-label: var(--step--1);
+    --text-body: var(--step-0);
+    --text-lead: var(--step-1);
+    --text-title: var(--step-2);
+    --text-display: var(--step-4);
+    --leading-body: 1.5;
+  }
+
+  [data-density="tool"] {
+    /* utopia:type https://utopia.fyi/type/calculator?c=768,12,1.1,1440,14,1.125,9,2 */
+    --step--2: clamp(0.6198rem, 0.5381rem + 0.1703vw, 0.6914rem);
+    --step--1: clamp(0.6818rem, 0.5722rem + 0.2285vw, 0.7778rem);
+    --step-0: clamp(0.75rem, 0.6071rem + 0.2976vw, 0.875rem);
+    --step-1: clamp(0.825rem, 0.6429rem + 0.3795vw, 0.9844rem);
+    --step-2: clamp(0.9075rem, 0.679rem + 0.476vw, 1.1074rem);
+    --step-3: clamp(0.9983rem, 0.7153rem + 0.5895vw, 1.2458rem);
+    --step-4: clamp(1.0981rem, 0.7512rem + 0.7226vw, 1.4016rem);
+    --step-5: clamp(1.2079rem, 0.7863rem + 0.8783vw, 1.5768rem);
+    --step-6: clamp(1.3287rem, 0.8199rem + 1.06vw, 1.7739rem);
+    --step-7: clamp(1.4615rem, 0.8512rem + 1.2716vw, 1.9956rem);
+    --step-8: clamp(1.6077rem, 0.8793rem + 1.5175vw, 2.2451rem);
+    --step-9: clamp(1.7685rem, 0.9031rem + 1.8029vw, 2.5257rem);
+    /* utopia:end */
+
+    --text-label: var(--step--1);
+    --text-body: var(--step-0);
+    --text-lead: var(--step-2);
+    --text-title: var(--step-4);
+    --text-display: var(--step-8);
+    --leading-body: 1.45;
+  }
+}

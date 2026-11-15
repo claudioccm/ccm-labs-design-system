@@ -1,0 +1,45 @@
+/**
+ * @block theme-toggle
+ * @purpose The half-filled circle, top right, that flips the page between the light look and its dark
+ *   twin. The button inside a cm-theme-toggle element, which gives it its behaviour.
+ * @markup
+ *   <cm-theme-toggle>
+ *     <button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false">
+ *       <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/></svg>
+ *     </button>
+ *   </cm-theme-toggle>
+ * @tokens --muted --fg --duration --ease
+ * @nojs hidden — Without JavaScript the toggle is not shown and the page follows the system setting.
+ * @do Put it at the end of the page's title row, once per page.
+ * @dont Add a label next to it or a third "system" state; choosing the system's own look again forgets the choice.
+ */
+@layer components {
+  .theme-toggle {
+    display: inline-flex;
+    padding: 4px;
+    border: 0;
+    border-radius: 50%;
+    background-color: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color var(--duration) var(--ease);
+  }
+
+  .theme-toggle:hover {
+    background-color: transparent;
+    color: var(--fg);
+  }
+
+  .theme-toggle svg {
+    display: block;
+  }
+
+  .theme-toggle[aria-pressed="true"] svg {
+    rotate: 180deg;
+  }
+
+  /* Without its script the button would do nothing, so it is not shown; its place in the row is kept. */
+  cm-theme-toggle:not(:defined) {
+    visibility: hidden;
+  }
+}

@@ -1,0 +1,27 @@
+/**
+ * @composition grid
+ * @purpose As many equal columns as fit, each at least a minimum width. For lists of cards or tiles.
+ * @markup
+ *   <div class="grid" {{state}}>
+ *     <div>One</div>
+ *     <div>Two</div>
+ *     <div>Three</div>
+ *     <div>Four</div>
+ *   </div>
+ * @states
+ *   data-space="l" — The space between cells. Default: m.
+ * @props
+ *   --grid-min — The narrowest a column may get. Default: 16rem.
+ * @tokens --space-m
+ * @do Set --grid-min to the narrowest width at which one cell still reads well.
+ * @dont Write grid-template-columns: repeat(3, 1fr) on a page; set --grid-min instead.
+ */
+@layer composition {
+  .grid {
+    --_space: var(--space-m);
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--grid-min, 16rem), 100%), 1fr));
+    gap: var(--_space);
+  }
+}

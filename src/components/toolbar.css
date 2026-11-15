@@ -1,0 +1,30 @@
+/**
+ * @block toolbar
+ * @purpose A row of controls over a rule, between a view's title and its content. It wraps on a narrow screen.
+ * @markup
+ *   <div class="toolbar" role="group" aria-label="Script controls">
+ *     <label class="field" data-layout="inline">
+ *       <span class="label">Speech model</span>
+ *       <select><option>Apple (on-device)</option></select>
+ *     </label>
+ *     <button type="button" class="button" data-variant="quiet">Other models</button>
+ *     <button type="button" class="button" data-variant="primary" data-push="end">Start</button>
+ *   </div>
+ * @tokens --space-xs --space-m --space-s --rule
+ * @do Add data-push="end" to the primary action to send it to the far end.
+ * @dont Give it role="toolbar"; that role promises arrow-key navigation this block does not add.
+ */
+@layer components {
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-xs) var(--space-m);
+    padding-block-end: var(--space-s);
+    border-block-end: 1px solid var(--rule);
+  }
+
+  .toolbar > [data-push="end"] {
+    margin-inline-start: auto;
+  }
+}

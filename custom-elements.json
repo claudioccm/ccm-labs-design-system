@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/elements/cm-theme-toggle.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Flips the page between the light look and its dark twin, and remembers the choice in this browser.\nIt wraps a native button and never renders markup of its own (PRINCIPLES.md §3).\n\nThe page follows the system setting until a choice is made. Choosing the system's own look again forgets\nthe choice, so the page goes back to following the system. The choice is applied before paint by\ntheme-init.js, which belongs in the page's head.",
+          "name": "CmThemeToggle",
+          "members": [
+            {
+              "kind": "field",
+              "name": "storageKey",
+              "type": {
+                "text": "string"
+              },
+              "static": true,
+              "default": "'cm-theme'"
+            },
+            {
+              "kind": "field",
+              "name": "#dark",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleEvent",
+              "parameters": [
+                {
+                  "name": "event"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "#system",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "#now",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "#flip",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#show",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "type": {
+                "text": "CustomEvent<{theme: 'light' | 'dark'}>"
+              },
+              "description": "On the document, after the theme flips.",
+              "name": "cm-theme-change"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "cm-theme-toggle",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "CmThemeToggle",
+          "declaration": {
+            "name": "CmThemeToggle",
+            "module": "src/elements/cm-theme-toggle.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "cm-theme-toggle",
+          "declaration": {
+            "name": "CmThemeToggle",
+            "module": "src/elements/cm-theme-toggle.js"
+          }
+        }
+      ]
+    }
+  ]
+}

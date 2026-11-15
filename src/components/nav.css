@@ -1,0 +1,41 @@
+/**
+ * @block nav
+ * @purpose A row of links between a site's or a tool's views. The current view is ink over a rule; the
+ *   others are muted.
+ * @markup
+ *   <nav class="nav" aria-label="Views">
+ *     <a href="#block-nav" aria-current="page">Brief</a>
+ *     <a href="#block-nav">Routines</a>
+ *     <a href="#block-nav">Ledger</a>
+ *   </nav>
+ * @tokens --space-2xs --space-m --muted --fg --duration --ease
+ * @do Mark the current view with aria-current="page"; that attribute is the state.
+ * @dont Add an "active" class; assistive technology cannot read a class.
+ */
+@layer components {
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2xs) var(--space-m);
+  }
+
+  .nav a {
+    padding-block-end: 2px;
+    border-block-end: 1px solid transparent;
+    color: var(--muted);
+    text-decoration: none;
+    transition:
+      border-color var(--duration) var(--ease),
+      color var(--duration) var(--ease);
+  }
+
+  .nav a:hover {
+    color: var(--fg);
+  }
+
+  .nav a[aria-current="page"] {
+    border-color: var(--fg);
+    color: var(--fg);
+  }
+}

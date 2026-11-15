@@ -1,0 +1,39 @@
+{
+  "name": "ccm-labs-design-system",
+  "version": "0.1.0",
+  "description": "The house design system for Claudio's pet projects: CUBE CSS, Utopia tokens, Every Layout composition and light-DOM custom elements.",
+  "type": "module",
+  "private": true,
+  "repository": "github:claudioccm/ccm-labs-design-system",
+  "exports": {
+    ".": "./dist/cm.css",
+    "./cm.css": "./dist/cm.css",
+    "./cm.js": "./dist/cm.js",
+    "./theme-init.js": "./dist/theme-init.js",
+    "./custom-elements.json": "./custom-elements.json",
+    "./package.json": "./package.json"
+  },
+  "customElements": "custom-elements.json",
+  "files": [
+    "dist",
+    "src",
+    "llms.txt",
+    "llms-full.txt",
+    "custom-elements.json",
+    "AGENTS.md",
+    "PRINCIPLES.md"
+  ],
+  "scripts": {
+    "build": "node tools/build.js",
+    "check": "node tools/check.js",
+    "test": "node --test tools/test.js",
+    "tokens": "node tools/utopia.js --write",
+    "dev": "node tools/serve.js",
+    "verify": "npm run build && npm run check && npm test"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@custom-elements-manifest/analyzer": "^0.11.0",
+    "playwright-core": "^1.65.1"
+  }
+}

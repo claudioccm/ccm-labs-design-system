@@ -1,0 +1,41 @@
+/**
+ * @composition sidebar
+ * @purpose Two columns, one narrow and one that takes the rest. They stack when the wide one would get
+ *   narrower than its minimum, with no breakpoint.
+ * @markup
+ *   <div class="sidebar" {{state}}>
+ *     <div>Sidebar</div>
+ *     <div>Content, which takes the remaining width.</div>
+ *   </div>
+ * @states
+ *   data-side="end" — The narrow column is the last child instead of the first.
+ *   data-space="l" — The space between the two. Default: m.
+ * @props
+ *   --sidebar-width — The narrow column's ideal width. Default: 16rem.
+ *   --sidebar-content-min — The wide column's minimum share before they stack. Default: 55%.
+ * @tokens --space-m
+ * @do Give it exactly two children.
+ * @dont Add a media query to stack the columns; change --sidebar-content-min.
+ */
+@layer composition {
+  .sidebar {
+    --_space: var(--space-m);
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--_space);
+  }
+
+  .sidebar:not([data-side="end"]) > :first-child,
+  .sidebar[data-side="end"] > :last-child {
+    flex-basis: var(--sidebar-width, 16rem);
+    flex-grow: 1;
+  }
+
+  .sidebar:not([data-side="end"]) > :last-child,
+  .sidebar[data-side="end"] > :first-child {
+    flex-basis: 0;
+    flex-grow: 999;
+    min-inline-size: var(--sidebar-content-min, 55%);
+  }
+}

@@ -1,0 +1,40 @@
+/**
+ * @token palette
+ * @purpose The raw colours of the house look. Primitives: only themes/theme.css reads them; everything
+ *   else reads the roles it defines (--fg, --bg, --rule…).
+ * @render palette
+ */
+@layer tokens {
+  :root {
+    /* Ink on paper */
+    --color-paper: #fff;
+    --color-ink: #111;
+    --color-ink-soft: #444;
+    --color-ink-muted: #6b6b6b;
+    --color-ink-rule: #e0e0e0;
+    --color-ink-hover: #f6f6f6;
+
+    /* The dark twin: a very dark blue, with text as white at 80, 65 and 50% so it takes a little of the blue. */
+    --color-night: #070a14;
+    --color-night-rule: #1b2131;
+    --color-night-hover: #0e1322;
+    --color-snow: rgb(255 255 255 / 0.8);
+    --color-snow-soft: rgb(255 255 255 / 0.65);
+    --color-snow-muted: rgb(255 255 255 / 0.5);
+
+    /* State colours: the plain one for dots and fills, the deep one for text on paper, the bright one on night. */
+    --color-teal: #109a96;
+    --color-teal-deep: #0b6f6c;
+    --color-teal-bright: #2fb8b2;
+    --color-yellow: #b08a00;
+    --color-yellow-deep: #8a6d00;
+    --color-yellow-bright: #e6c350;
+    --color-red: #e2231a;
+    --color-red-bright: #ff5b4f;
+
+    --color-shade: rgb(0 0 0 / 0.08);
+    --color-shade-deep: rgb(0 0 0 / 0.5);
+    --color-scrim: rgb(0 0 0 / 0.4);
+    --color-scrim-deep: rgb(0 0 0 / 0.7);
+  }
+}

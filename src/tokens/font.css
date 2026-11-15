@@ -1,0 +1,19 @@
+/**
+ * @token typefaces
+ * @purpose Two typefaces: Switzer (Fontshare, 300 to 600) for all text, Montagu Slab Light (Google) only for
+ *   display: a page or app name, dialog titles, big numerals. The stylesheet does not load them; add the
+ *   font links from AGENTS.md to the page's head.
+ * @render font
+ */
+@layer tokens {
+  :root {
+    --font-text: Switzer, 'Inter Tight', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-display: 'Montagu Slab', Rockwell, Georgia, serif;
+    --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+    --leading-tight: 1.2;
+    --leading-display: 1.1;
+    --tracking-label: 0.06em;
+    --tracking-display: -0.01em;
+  }
+}

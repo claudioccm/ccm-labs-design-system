@@ -1,0 +1,27 @@
+/**
+ * @block display
+ * @purpose The display face, Montagu Slab Light, on anything that is not an h1: an app name, a dialog
+ *   title, a big numeral.
+ * @markup
+ *   <p class="display" {{state}}>Teleprompter</p>
+ * @states
+ *   data-size="display" — The largest size, for a page name or a big numeral. Default: the title size.
+ * @tokens --font-display --text-title --text-display --leading-display --tracking-display
+ * @do Keep it to one or two per view; it marks the name of the thing.
+ * @dont Set body text, labels or buttons in it.
+ */
+@layer components {
+  .display {
+    font-family: var(--font-display);
+    font-size: var(--text-title);
+    font-weight: 300;
+    font-optical-sizing: auto;
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    text-wrap: balance;
+  }
+
+  .display[data-size="display"] {
+    font-size: var(--text-display);
+  }
+}

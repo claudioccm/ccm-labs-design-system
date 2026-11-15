@@ -1,0 +1,66 @@
+/**
+ * @utility visually-hidden
+ * @purpose Hides text from the screen but keeps it for screen readers: a name for an icon button, a
+ *   heading for a section that needs none visually.
+ * @markup
+ *   <p>The next words are read aloud but not shown<span class="visually-hidden">: here they are</span>.</p>
+ */
+@layer utils {
+  .visually-hidden {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/**
+ * @utility tone
+ * @purpose Text colour by role: muted or soft for quiet text, and the three state colours in their
+ *   text-safe shades. State colours are for state, never decoration.
+ * @markup
+ *   <div class="stack" data-space="3xs">
+ *     <p class="tone-soft">Soft: a lead or a secondary paragraph.</p>
+ *     <p class="tone-muted">Muted: meta, hints, counts.</p>
+ *     <p class="tone-ok">Ok: installed, done, live.</p>
+ *     <p class="tone-ask">Ask: waiting on you, loading.</p>
+ *     <p class="tone-trouble">Trouble: it failed.</p>
+ *   </div>
+ */
+@layer utils {
+  .tone-soft { color: var(--soft); }
+  .tone-muted { color: var(--muted); }
+  .tone-ok { color: var(--ok-ink); }
+  .tone-ask { color: var(--ask-ink); }
+  .tone-trouble { color: var(--trouble); }
+}
+
+/**
+ * @utility tabular
+ * @purpose Numerals of equal width, so a number that changes does not shift its neighbours and columns
+ *   line up. Tables, time and output elements have it already.
+ * @markup
+ *   <p class="tabular">1,204 words · about 9 min</p>
+ */
+@layer utils {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/**
+ * @utility measure
+ * @purpose Keeps running text to a readable line length (--measure, 65 characters).
+ * @markup
+ *   <p class="measure">A paragraph that would otherwise run the full width of a wide container stops at a comfortable line length, however wide the page gets, because long lines are hard to follow back to the start of the next one.</p>
+ */
+@layer utils {
+  .measure {
+    max-inline-size: var(--measure);
+  }
+}

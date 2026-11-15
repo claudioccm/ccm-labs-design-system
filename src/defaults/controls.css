@@ -1,0 +1,80 @@
+/**
+ * @base controls
+ * @purpose Native form controls with no class: square, one rule colour. Hovering a field turns its border
+ *   muted and the field you are in takes the ink. A plain button has a rule border; for the main action or
+ *   a quiet one, see the button block.
+ * @markup
+ *   <div class="cluster">
+ *     <input type="text" placeholder="Text" aria-label="Text">
+ *     <select aria-label="Choice"><option>One</option><option>Two</option></select>
+ *     <button type="button">Button</button>
+ *     <input type="checkbox" checked aria-label="Checked">
+ *     <input type="radio" checked aria-label="Chosen">
+ *     <progress value="0.6" aria-label="Progress"></progress>
+ *   </div>
+ */
+@layer defaults {
+  button,
+  input:is([type="button"], [type="submit"], [type="reset"]),
+  input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"]),
+  select,
+  textarea {
+    padding: var(--control-pad-block) var(--control-pad-inline);
+    border: 1px solid var(--rule);
+    border-radius: 0;
+    background-color: var(--bg);
+    color: var(--fg);
+    transition:
+      background-color var(--duration) var(--ease),
+      border-color var(--duration) var(--ease),
+      color var(--duration) var(--ease);
+  }
+
+  button,
+  input:is([type="button"], [type="submit"], [type="reset"]),
+  select {
+    cursor: pointer;
+  }
+
+  button:hover,
+  input:is([type="button"], [type="submit"], [type="reset"]):hover {
+    background-color: var(--hover);
+  }
+
+  /* Fields: the border carries hover and focus, so the ring is not drawn twice. */
+  input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"], [type="button"], [type="submit"], [type="reset"]),
+  select,
+  textarea {
+    &:hover {
+      border-color: var(--muted);
+    }
+
+    &:focus-visible {
+      outline: none;
+      border-color: var(--fg);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  ::placeholder {
+    color: var(--muted);
+    opacity: 1;
+  }
+
+  input:is([type="checkbox"], [type="radio"], [type="range"]),
+  progress {
+    accent-color: var(--fg);
+  }
+
+  input:is([type="checkbox"], [type="radio"]) {
+    margin: 0;
+  }
+
+  :disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

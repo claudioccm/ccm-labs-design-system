@@ -1,0 +1,43 @@
+/**
+ * @base table
+ * @purpose Tables with no class: column heads as small uppercase labels, one rule under each row,
+ *   tabular numerals so columns of numbers line up.
+ * @markup
+ *   <table>
+ *     <thead><tr><th>Routine</th><th>Runs</th><th>Last</th></tr></thead>
+ *     <tbody>
+ *       <tr><td>Morning brief</td><td>31</td><td>05:02</td></tr>
+ *       <tr><td>Label inbox</td><td>128</td><td>05:00</td></tr>
+ *     </tbody>
+ *   </table>
+ */
+@layer defaults {
+  table {
+    inline-size: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+
+  th, td {
+    padding: var(--space-2xs) var(--space-xs);
+    border-block-end: 1px solid var(--rule);
+    text-align: start;
+    vertical-align: baseline;
+  }
+
+  th {
+    font-size: var(--text-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  th:first-child, td:first-child {
+    padding-inline-start: 0;
+  }
+
+  th:last-child, td:last-child {
+    padding-inline-end: 0;
+  }
+}

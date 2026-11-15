@@ -1,0 +1,26 @@
+/**
+ * @composition center
+ * @purpose A centred column with a maximum width. With data-gutter it is the page wrapper.
+ * @markup
+ *   <div class="center" {{state}}>
+ *     <div>A column no wider than the measure, centred in its parent.</div>
+ *   </div>
+ * @states
+ *   data-gutter — Adds the page's outer padding (--gutter) on both sides.
+ * @props
+ *   --center-max — The maximum width. Default: --measure (65ch).
+ * @tokens --measure --gutter
+ * @do Set --center-max on the element for a wider page: style="--center-max: 65rem".
+ * @dont Nest a center in a center to add padding; use data-gutter once, on the outer one.
+ */
+@layer composition {
+  .center {
+    box-sizing: content-box;
+    max-inline-size: var(--center-max, var(--measure));
+    margin-inline: auto;
+  }
+
+  .center[data-gutter] {
+    padding-inline: var(--gutter);
+  }
+}

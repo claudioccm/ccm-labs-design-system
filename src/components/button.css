@@ -1,0 +1,69 @@
+/**
+ * @block button
+ * @purpose An action. A view has one primary button, filled ink; everything secondary is a quiet text
+ *   button. Works on a button or a link.
+ * @markup
+ *   <button type="button" class="button" {{state}}>Start</button>
+ * @states
+ *   data-variant="primary" — Filled ink: the one main action in a view.
+ *   data-variant="quiet" — Muted text over a rule, turning to ink on hover: secondary actions such as Close or Undo.
+ *   disabled — Dimmed and not clickable. On a link, use aria-disabled="true".
+ * @tokens --control-pad-block --control-pad-inline --space-2xs --rule --bg --fg --hover --soft --muted --duration --ease
+ * @do Write the label as a verb: Start, Save, Download and install.
+ * @dont Put two primary buttons in one view, or use an ✕ where a quiet "Close" fits.
+ */
+@layer components {
+  .button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-2xs);
+    padding: var(--control-pad-block) var(--control-pad-inline);
+    border: 1px solid var(--rule);
+    border-radius: 0;
+    background-color: var(--bg);
+    color: var(--fg);
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color var(--duration) var(--ease),
+      border-color var(--duration) var(--ease),
+      color var(--duration) var(--ease);
+  }
+
+  .button:hover {
+    background-color: var(--hover);
+  }
+
+  .button[data-variant="primary"] {
+    border-color: var(--fg);
+    background-color: var(--fg);
+    color: var(--bg);
+    font-weight: 500;
+  }
+
+  .button[data-variant="primary"]:hover {
+    border-color: var(--soft);
+    background-color: var(--soft);
+  }
+
+  .button[data-variant="quiet"] {
+    padding: 0 0 1px;
+    border: 0;
+    border-block-end: 1px solid var(--rule);
+    background-color: transparent;
+    color: var(--muted);
+  }
+
+  .button[data-variant="quiet"]:hover {
+    border-color: var(--fg);
+    background-color: transparent;
+    color: var(--fg);
+  }
+
+  .button:disabled,
+  .button[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

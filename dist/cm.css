@@ -1,0 +1,1410 @@
+/*! ccm-labs-design-system v0.1.0 — github.com/claudioccm/ccm-labs-design-system — built from src/, do not edit */
+@layer reset, defaults, tokens, themes, composition, components, utils, overrides;
+
+/**
+ * @base reset
+ * @purpose A small modern reset (after Andy Bell's): border-box sizing, no default margins on text, media
+ *   that fits its container, controls that inherit the page's type. Spacing between elements comes from
+ *   composition (stack, cluster), never from an element's own margin.
+ */
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -moz-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+  }
+
+  body, h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd, ul, ol, pre {
+    margin: 0;
+  }
+
+  ul[role="list"],
+  ol[role="list"] {
+    padding: 0;
+    list-style: none;
+  }
+
+  body {
+    min-block-size: 100dvh;
+  }
+
+  img, picture, video, canvas {
+    display: block;
+    max-inline-size: 100%;
+  }
+
+  img, video {
+    block-size: auto;
+  }
+
+  button, input, select, textarea {
+    font: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+  }
+
+  fieldset {
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  legend {
+    padding: 0;
+  }
+
+  :target {
+    scroll-margin-block: 5ex;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+}
+
+/**
+ * @base page
+ * @purpose The page itself: ink on paper in Switzer at the body step, an inverted selection, one focus
+ *   ring, and no motion for people who asked for none.
+ */
+@layer defaults {
+  :root {
+    font-family: var(--font-text);
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+  }
+
+  /* Not on the root: rem is the root's size, and the space scale must not shrink with the tool density. */
+  body,
+  [data-density]:not(:root) {
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+  }
+
+  ::selection {
+    background-color: var(--fg);
+    color: var(--bg);
+  }
+
+  :focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-offset);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/**
+ * @base typography
+ * @purpose Text elements with no class. h1 is the display face (a page or app name); other headings are
+ *   Switzer at weight 500. A link with no class is ink over a 1px rule, turning muted on hover.
+ * @markup
+ *   <div class="stack">
+ *     <h1>Page name</h1>
+ *     <h2>Section heading</h2>
+ *     <h3>Smaller heading</h3>
+ *     <p>Body text with <a href="#base-typography">a link</a>, <strong>strong text</strong>, <code>code</code> and <kbd>Esc</kbd>.</p>
+ *     <ul>
+ *       <li>A list item</li>
+ *       <li>Another one</li>
+ *     </ul>
+ *     <blockquote>A quotation sits behind a single ink rule.</blockquote>
+ *     <hr>
+ *     <pre><code>const quiet = true;</code></pre>
+ *   </div>
+ */
+@layer defaults {
+  h1, h2, h3, h4, h5, h6 {
+    line-height: var(--leading-tight);
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-display);
+    font-weight: 300;
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+  }
+
+  h2 {
+    font-size: var(--text-title);
+    font-weight: 500;
+    letter-spacing: var(--tracking-display);
+  }
+
+  h3 {
+    font-size: var(--text-lead);
+    font-weight: 500;
+  }
+
+  h4, h5, h6 {
+    font-size: var(--text-body);
+    font-weight: 600;
+  }
+
+  p, li, dd, figcaption {
+    text-wrap: pretty;
+  }
+
+  /* Links are ink over a rule (a border, not text-decoration). Anything with a class styles itself. */
+  a:not([class]) {
+    color: var(--fg);
+    text-decoration: none;
+    border-block-end: 1px solid currentColor;
+    transition: color var(--duration) var(--ease);
+  }
+
+  a:not([class]):hover {
+    color: var(--muted);
+  }
+
+  strong, b {
+    font-weight: 600;
+  }
+
+  small {
+    font-size: var(--text-label);
+  }
+
+  ul:not([role="list"]),
+  ol:not([role="list"]) {
+    padding-inline-start: 1.25em;
+  }
+
+  hr {
+    block-size: 0;
+    margin: 0;
+    border: 0;
+    border-block-start: 1px solid var(--rule);
+  }
+
+  blockquote {
+    padding-inline-start: var(--space-s);
+    border-inline-start: 1px solid var(--fg);
+  }
+
+  code, kbd, samp, pre {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+  }
+
+  pre {
+    padding: var(--space-s);
+    border: 1px solid var(--rule);
+    overflow-x: auto;
+    line-height: 1.5;
+    tab-size: 2;
+  }
+
+  kbd {
+    padding: 0 0.35em;
+    border: 1px solid var(--rule);
+  }
+
+  summary {
+    cursor: pointer;
+  }
+
+  time, output {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/**
+ * @base controls
+ * @purpose Native form controls with no class: square, one rule colour. Hovering a field turns its border
+ *   muted and the field you are in takes the ink. A plain button has a rule border; for the main action or
+ *   a quiet one, see the button block.
+ * @markup
+ *   <div class="cluster">
+ *     <input type="text" placeholder="Text" aria-label="Text">
+ *     <select aria-label="Choice"><option>One</option><option>Two</option></select>
+ *     <button type="button">Button</button>
+ *     <input type="checkbox" checked aria-label="Checked">
+ *     <input type="radio" checked aria-label="Chosen">
+ *     <progress value="0.6" aria-label="Progress"></progress>
+ *   </div>
+ */
+@layer defaults {
+  button,
+  input:is([type="button"], [type="submit"], [type="reset"]),
+  input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"]),
+  select,
+  textarea {
+    padding: var(--control-pad-block) var(--control-pad-inline);
+    border: 1px solid var(--rule);
+    border-radius: 0;
+    background-color: var(--bg);
+    color: var(--fg);
+    transition:
+      background-color var(--duration) var(--ease),
+      border-color var(--duration) var(--ease),
+      color var(--duration) var(--ease);
+  }
+
+  button,
+  input:is([type="button"], [type="submit"], [type="reset"]),
+  select {
+    cursor: pointer;
+  }
+
+  button:hover,
+  input:is([type="button"], [type="submit"], [type="reset"]):hover {
+    background-color: var(--hover);
+  }
+
+  /* Fields: the border carries hover and focus, so the ring is not drawn twice. */
+  input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"], [type="button"], [type="submit"], [type="reset"]),
+  select,
+  textarea {
+    &:hover {
+      border-color: var(--muted);
+    }
+
+    &:focus-visible {
+      outline: none;
+      border-color: var(--fg);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  ::placeholder {
+    color: var(--muted);
+    opacity: 1;
+  }
+
+  input:is([type="checkbox"], [type="radio"], [type="range"]),
+  progress {
+    accent-color: var(--fg);
+  }
+
+  input:is([type="checkbox"], [type="radio"]) {
+    margin: 0;
+  }
+
+  :disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+/**
+ * @base table
+ * @purpose Tables with no class: column heads as small uppercase labels, one rule under each row,
+ *   tabular numerals so columns of numbers line up.
+ * @markup
+ *   <table>
+ *     <thead><tr><th>Routine</th><th>Runs</th><th>Last</th></tr></thead>
+ *     <tbody>
+ *       <tr><td>Morning brief</td><td>31</td><td>05:02</td></tr>
+ *       <tr><td>Label inbox</td><td>128</td><td>05:00</td></tr>
+ *     </tbody>
+ *   </table>
+ */
+@layer defaults {
+  table {
+    inline-size: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+
+  th, td {
+    padding: var(--space-2xs) var(--space-xs);
+    border-block-end: 1px solid var(--rule);
+    text-align: start;
+    vertical-align: baseline;
+  }
+
+  th {
+    font-size: var(--text-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  th:first-child, td:first-child {
+    padding-inline-start: 0;
+  }
+
+  th:last-child, td:last-child {
+    padding-inline-end: 0;
+  }
+}
+
+/**
+ * @token palette
+ * @purpose The raw colours of the house look. Primitives: only themes/theme.css reads them; everything
+ *   else reads the roles it defines (--fg, --bg, --rule…).
+ * @render palette
+ */
+@layer tokens {
+  :root {
+    /* Ink on paper */
+    --color-paper: #fff;
+    --color-ink: #111;
+    --color-ink-soft: #444;
+    --color-ink-muted: #6b6b6b;
+    --color-ink-rule: #e0e0e0;
+    --color-ink-hover: #f6f6f6;
+
+    /* The dark twin: a very dark blue, with text as white at 80, 65 and 50% so it takes a little of the blue. */
+    --color-night: #070a14;
+    --color-night-rule: #1b2131;
+    --color-night-hover: #0e1322;
+    --color-snow: rgb(255 255 255 / 0.8);
+    --color-snow-soft: rgb(255 255 255 / 0.65);
+    --color-snow-muted: rgb(255 255 255 / 0.5);
+
+    /* State colours: the plain one for dots and fills, the deep one for text on paper, the bright one on night. */
+    --color-teal: #109a96;
+    --color-teal-deep: #0b6f6c;
+    --color-teal-bright: #2fb8b2;
+    --color-yellow: #b08a00;
+    --color-yellow-deep: #8a6d00;
+    --color-yellow-bright: #e6c350;
+    --color-red: #e2231a;
+    --color-red-bright: #ff5b4f;
+
+    --color-shade: rgb(0 0 0 / 0.08);
+    --color-shade-deep: rgb(0 0 0 / 0.5);
+    --color-scrim: rgb(0 0 0 / 0.4);
+    --color-scrim-deep: rgb(0 0 0 / 0.7);
+  }
+}
+
+/**
+ * @token type-scale
+ * @purpose Fluid type from utopia.fyi. Two scales share the --step-n names: "read" (the default: 16px to
+ *   17px body) for pages that are read, and data-density="tool" (12px to 14px body) for dense tools. Blocks
+ *   read the --text-* roles, which point at the right step in each scale, so a block never knows which scale
+ *   is active. Set data-density on the root, or on any element to switch one surface.
+ * @markup
+ *   <div data-density="tool" class="stack" data-space="2xs">
+ *     <p class="label">Tool density</p>
+ *     <p>The same markup at the dense scale, for a surface inside a reading page.</p>
+ *   </div>
+ * @render type
+ */
+@layer tokens {
+  :root,
+  [data-density="read"] {
+    /* utopia:type https://utopia.fyi/type/calculator?c=360,16,1.2,1440,17,1.25,9,2 */
+    --step--2: clamp(0.68rem, 0.6993rem + -0.0214vw, 0.6944rem);
+    --step--1: clamp(0.8333rem, 0.8278rem + 0.0247vw, 0.85rem);
+    --step-0: clamp(1rem, 0.9792rem + 0.0926vw, 1.0625rem);
+    --step-1: clamp(1.2rem, 1.1573rem + 0.1898vw, 1.3281rem);
+    --step-2: clamp(1.44rem, 1.3666rem + 0.3262vw, 1.6602rem);
+    --step-3: clamp(1.728rem, 1.6123rem + 0.5144vw, 2.0752rem);
+    --step-4: clamp(2.0736rem, 1.9001rem + 0.771vw, 2.594rem);
+    --step-5: clamp(2.4883rem, 2.2369rem + 1.1173vw, 3.2425rem);
+    --step-6: clamp(2.986rem, 2.6303rem + 1.5809vw, 4.0531rem);
+    --step-7: clamp(3.5832rem, 3.0888rem + 2.1974vw, 5.0664rem);
+    --step-8: clamp(4.2998rem, 3.6221rem + 3.0121vw, 6.333rem);
+    --step-9: clamp(5.1598rem, 4.241rem + 4.0836vw, 7.9162rem);
+    /* utopia:end */
+
+    --text-label: var(--step--1);
+    --text-body: var(--step-0);
+    --text-lead: var(--step-1);
+    --text-title: var(--step-2);
+    --text-display: var(--step-4);
+    --leading-body: 1.5;
+  }
+
+  [data-density="tool"] {
+    /* utopia:type https://utopia.fyi/type/calculator?c=768,12,1.1,1440,14,1.125,9,2 */
+    --step--2: clamp(0.6198rem, 0.5381rem + 0.1703vw, 0.6914rem);
+    --step--1: clamp(0.6818rem, 0.5722rem + 0.2285vw, 0.7778rem);
+    --step-0: clamp(0.75rem, 0.6071rem + 0.2976vw, 0.875rem);
+    --step-1: clamp(0.825rem, 0.6429rem + 0.3795vw, 0.9844rem);
+    --step-2: clamp(0.9075rem, 0.679rem + 0.476vw, 1.1074rem);
+    --step-3: clamp(0.9983rem, 0.7153rem + 0.5895vw, 1.2458rem);
+    --step-4: clamp(1.0981rem, 0.7512rem + 0.7226vw, 1.4016rem);
+    --step-5: clamp(1.2079rem, 0.7863rem + 0.8783vw, 1.5768rem);
+    --step-6: clamp(1.3287rem, 0.8199rem + 1.06vw, 1.7739rem);
+    --step-7: clamp(1.4615rem, 0.8512rem + 1.2716vw, 1.9956rem);
+    --step-8: clamp(1.6077rem, 0.8793rem + 1.5175vw, 2.2451rem);
+    --step-9: clamp(1.7685rem, 0.9031rem + 1.8029vw, 2.5257rem);
+    /* utopia:end */
+
+    --text-label: var(--step--1);
+    --text-body: var(--step-0);
+    --text-lead: var(--step-2);
+    --text-title: var(--step-4);
+    --text-display: var(--step-8);
+    --leading-body: 1.45;
+  }
+}
+
+/**
+ * @token space-scale
+ * @purpose Fluid space from utopia.fyi: the house scale 4 8 12 16 24 32 48 64 96 at a phone, growing a little
+ *   with the type. One scale for both densities. Pairs (--space-s-l) grow from one step to another across the
+ *   viewport; --gutter is the page's outer padding.
+ * @render space
+ */
+@layer tokens {
+  :root {
+    /* utopia:space https://utopia.fyi/space/calculator?c=360,16,1.2,1440,17,1.25,9,2&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l|s-xl */
+    --space-3xs: clamp(0.25rem, 0.25rem + 0vw, 0.25rem);
+    --space-2xs: clamp(0.5rem, 0.4792rem + 0.0926vw, 0.5625rem);
+    --space-xs: clamp(0.75rem, 0.7292rem + 0.0926vw, 0.8125rem);
+    --space-s: clamp(1rem, 0.9792rem + 0.0926vw, 1.0625rem);
+    --space-m: clamp(1.5rem, 1.4583rem + 0.1852vw, 1.625rem);
+    --space-l: clamp(2rem, 1.9583rem + 0.1852vw, 2.125rem);
+    --space-xl: clamp(3rem, 2.9375rem + 0.2778vw, 3.1875rem);
+    --space-2xl: clamp(4rem, 3.9167rem + 0.3704vw, 4.25rem);
+    --space-3xl: clamp(6rem, 5.875rem + 0.5556vw, 6.375rem);
+    /* One-up pairs */
+    --space-3xs-2xs: clamp(0.25rem, 0.1458rem + 0.463vw, 0.5625rem);
+    --space-2xs-xs: clamp(0.5rem, 0.3958rem + 0.463vw, 0.8125rem);
+    --space-xs-s: clamp(0.75rem, 0.6458rem + 0.463vw, 1.0625rem);
+    --space-s-m: clamp(1rem, 0.7917rem + 0.9259vw, 1.625rem);
+    --space-m-l: clamp(1.5rem, 1.2917rem + 0.9259vw, 2.125rem);
+    --space-l-xl: clamp(2rem, 1.6042rem + 1.7593vw, 3.1875rem);
+    --space-xl-2xl: clamp(3rem, 2.5833rem + 1.8519vw, 4.25rem);
+    --space-2xl-3xl: clamp(4rem, 3.2083rem + 3.5185vw, 6.375rem);
+    /* Custom pairs */
+    --space-s-l: clamp(1rem, 0.625rem + 1.6667vw, 2.125rem);
+    --space-s-xl: clamp(1rem, 0.2708rem + 3.2407vw, 3.1875rem);
+    /* utopia:end */
+
+    --gutter: var(--space-s-xl);
+    --measure: 65ch;
+  }
+}
+
+/**
+ * @token typefaces
+ * @purpose Two typefaces: Switzer (Fontshare, 300 to 600) for all text, Montagu Slab Light (Google) only for
+ *   display: a page or app name, dialog titles, big numerals. The stylesheet does not load them; add the
+ *   font links from AGENTS.md to the page's head.
+ * @render font
+ */
+@layer tokens {
+  :root {
+    --font-text: Switzer, 'Inter Tight', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-display: 'Montagu Slab', Rockwell, Georgia, serif;
+    --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+    --leading-tight: 1.2;
+    --leading-display: 1.1;
+    --tracking-label: 0.06em;
+    --tracking-display: -0.01em;
+  }
+}
+
+/**
+ * @token controls-and-motion
+ * @purpose The focus ring, control padding and the one quiet transition. Control padding is in em, so a
+ *   control tightens with the tool density's smaller type.
+ * @render none
+ */
+@layer tokens {
+  :root {
+    --focus-ring: 2px solid var(--fg);
+    --focus-offset: 2px;
+
+    --control-pad-block: 0.375em;
+    --control-pad-inline: 0.75em;
+
+    --duration: 140ms;
+    --ease: ease-out;
+  }
+}
+
+/**
+ * @token theme
+ * @purpose Colour roles for the light look and its dark twin. The page follows the system setting;
+ *   data-theme="light" or "dark" on the root (set by cm-theme-toggle) overrides it, and on any other element
+ *   pins that surface to one look.
+ * @markup
+ *   <div data-theme="dark" class="stack" style="padding: var(--space-m)">
+ *     <p>Pinned to the dark twin, whatever the page is: for a surface read on camera or in the dark.</p>
+ *     <p class="tone-muted">Roles resolve again inside it.</p>
+ *   </div>
+ * @render swatch
+ */
+@layer themes {
+  /* light-dark() picks a side from the element's color-scheme, so the dark twin is written once and a pinned
+     surface only has to set color-scheme. */
+  :root {
+    color-scheme: light dark;
+
+    --bg: light-dark(var(--color-paper), var(--color-night));
+    --fg: light-dark(var(--color-ink), var(--color-snow));
+    --soft: light-dark(var(--color-ink-soft), var(--color-snow-soft));
+    --muted: light-dark(var(--color-ink-muted), var(--color-snow-muted));
+    --rule: light-dark(var(--color-ink-rule), var(--color-night-rule));
+    --hover: light-dark(var(--color-ink-hover), var(--color-night-hover));
+
+    /* Colour means state only: ok or live, asking or loading, trouble. The -ink ones are for text. */
+    --ok: light-dark(var(--color-teal), var(--color-teal-bright));
+    --ok-ink: light-dark(var(--color-teal-deep), var(--color-teal-bright));
+    --ask: light-dark(var(--color-yellow), var(--color-yellow-bright));
+    --ask-ink: light-dark(var(--color-yellow-deep), var(--color-yellow-bright));
+    --trouble: light-dark(var(--color-red), var(--color-red-bright));
+
+    --shadow: 0 12px 32px light-dark(var(--color-shade), var(--color-shade-deep));
+    --backdrop: light-dark(var(--color-scrim), var(--color-scrim-deep));
+  }
+
+  [data-theme="light"] { color-scheme: light; }
+  [data-theme="dark"] { color-scheme: dark; }
+
+  /* A pinned surface repaints itself: colour is inherited already resolved, so it has to be set again. */
+  [data-theme]:not(:root) {
+    background-color: var(--bg);
+    color: var(--fg);
+  }
+}
+
+/**
+ * @composition stack
+ * @purpose Children in a column with one space between them. The default way to space anything vertically.
+ * @markup
+ *   <div class="stack" {{state}}>
+ *     <div>One</div>
+ *     <div>Two</div>
+ *     <div>Three</div>
+ *   </div>
+ * @states
+ *   data-space="xs" — The space between children: any step or pair of the space scale. Default: s.
+ *   data-align="start" — Children keep their own width (start, center or end) instead of stretching.
+ * @tokens --space-s
+ * @do Nest stacks with different data-space values to group related things.
+ * @dont Put margins on the children; the stack owns the space between them.
+ */
+@layer composition {
+  .stack {
+    --_space: var(--space-s);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: var(--_space);
+  }
+
+  .stack[data-align="start"] { align-items: flex-start; }
+  .stack[data-align="center"] { align-items: center; }
+  .stack[data-align="end"] { align-items: flex-end; }
+}
+
+/**
+ * @composition cluster
+ * @purpose Things in a row that wrap when they run out of room: buttons, a title and its actions, meta.
+ * @markup
+ *   <div class="cluster" {{state}}>
+ *     <div>One</div>
+ *     <div>Two</div>
+ *     <div>Three</div>
+ *   </div>
+ * @states
+ *   data-space="xs" — The space between children, across and down. Default: s.
+ *   data-justify="between" — First child to the start, last to the end (also: center, end).
+ *   data-align="baseline" — Align on the text baseline (also: start, end, stretch). Default: center.
+ * @tokens --space-s
+ * @do Add data-push="end" to a child to send it, and everything after it, to the far end.
+ * @dont Use it for page columns; that is sidebar, switcher or grid.
+ */
+@layer composition {
+  .cluster {
+    --_space: var(--space-s);
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--_space);
+  }
+
+  .cluster[data-justify="between"] { justify-content: space-between; }
+  .cluster[data-justify="center"] { justify-content: center; }
+  .cluster[data-justify="end"] { justify-content: flex-end; }
+
+  .cluster[data-align="start"] { align-items: flex-start; }
+  .cluster[data-align="baseline"] { align-items: baseline; }
+  .cluster[data-align="end"] { align-items: flex-end; }
+  .cluster[data-align="stretch"] { align-items: stretch; }
+
+  .cluster > [data-push="end"] { margin-inline-start: auto; }
+}
+
+/**
+ * @composition center
+ * @purpose A centred column with a maximum width. With data-gutter it is the page wrapper.
+ * @markup
+ *   <div class="center" {{state}}>
+ *     <div>A column no wider than the measure, centred in its parent.</div>
+ *   </div>
+ * @states
+ *   data-gutter — Adds the page's outer padding (--gutter) on both sides.
+ * @props
+ *   --center-max — The maximum width. Default: --measure (65ch).
+ * @tokens --measure --gutter
+ * @do Set --center-max on the element for a wider page: style="--center-max: 65rem".
+ * @dont Nest a center in a center to add padding; use data-gutter once, on the outer one.
+ */
+@layer composition {
+  .center {
+    box-sizing: content-box;
+    max-inline-size: var(--center-max, var(--measure));
+    margin-inline: auto;
+  }
+
+  .center[data-gutter] {
+    padding-inline: var(--gutter);
+  }
+}
+
+/**
+ * @composition sidebar
+ * @purpose Two columns, one narrow and one that takes the rest. They stack when the wide one would get
+ *   narrower than its minimum, with no breakpoint.
+ * @markup
+ *   <div class="sidebar" {{state}}>
+ *     <div>Sidebar</div>
+ *     <div>Content, which takes the remaining width.</div>
+ *   </div>
+ * @states
+ *   data-side="end" — The narrow column is the last child instead of the first.
+ *   data-space="l" — The space between the two. Default: m.
+ * @props
+ *   --sidebar-width — The narrow column's ideal width. Default: 16rem.
+ *   --sidebar-content-min — The wide column's minimum share before they stack. Default: 55%.
+ * @tokens --space-m
+ * @do Give it exactly two children.
+ * @dont Add a media query to stack the columns; change --sidebar-content-min.
+ */
+@layer composition {
+  .sidebar {
+    --_space: var(--space-m);
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--_space);
+  }
+
+  .sidebar:not([data-side="end"]) > :first-child,
+  .sidebar[data-side="end"] > :last-child {
+    flex-basis: var(--sidebar-width, 16rem);
+    flex-grow: 1;
+  }
+
+  .sidebar:not([data-side="end"]) > :last-child,
+  .sidebar[data-side="end"] > :first-child {
+    flex-basis: 0;
+    flex-grow: 999;
+    min-inline-size: var(--sidebar-content-min, 55%);
+  }
+}
+
+/**
+ * @composition switcher
+ * @purpose Equal columns that all switch to a single column at once when the container gets narrower than
+ *   a threshold.
+ * @markup
+ *   <div class="switcher" {{state}}>
+ *     <div>One</div>
+ *     <div>Two</div>
+ *     <div>Three</div>
+ *   </div>
+ * @states
+ *   data-space="l" — The space between children. Default: m.
+ * @props
+ *   --switcher-threshold — The container width below which the children stack. Default: 30rem.
+ * @tokens --space-m
+ * @do Use it for two to four equal things; it never leaves one alone on a row.
+ * @dont Use it for a list of unknown length; that is grid.
+ */
+@layer composition {
+  .switcher {
+    --_space: var(--space-m);
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--_space);
+  }
+
+  .switcher > * {
+    flex-grow: 1;
+    flex-basis: calc((var(--switcher-threshold, 30rem) - 100%) * 999);
+  }
+}
+
+/**
+ * @composition grid
+ * @purpose As many equal columns as fit, each at least a minimum width. For lists of cards or tiles.
+ * @markup
+ *   <div class="grid" {{state}}>
+ *     <div>One</div>
+ *     <div>Two</div>
+ *     <div>Three</div>
+ *     <div>Four</div>
+ *   </div>
+ * @states
+ *   data-space="l" — The space between cells. Default: m.
+ * @props
+ *   --grid-min — The narrowest a column may get. Default: 16rem.
+ * @tokens --space-m
+ * @do Set --grid-min to the narrowest width at which one cell still reads well.
+ * @dont Write grid-template-columns: repeat(3, 1fr) on a page; set --grid-min instead.
+ */
+@layer composition {
+  .grid {
+    --_space: var(--space-m);
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--grid-min, 16rem), 100%), 1fr));
+    gap: var(--_space);
+  }
+}
+
+/**
+ * @composition cover
+ * @purpose A full-height column: one child, marked data-principal, sits in the vertical centre, with an
+ *   optional header above and footer below.
+ * @markup
+ *   <div class="cover" style="--cover-min: 14rem" {{state}}>
+ *     <div>Header</div>
+ *     <div data-principal>The principal child, centred in the space left over.</div>
+ *     <div>Footer</div>
+ *   </div>
+ * @states
+ *   data-space="l" — The minimum space between the children. Default: m.
+ * @props
+ *   --cover-min — The minimum height. Default: 100dvh.
+ * @tokens --space-m
+ * @do Mark exactly one child data-principal.
+ * @dont Use it only to make a page fill the screen; the body is already at least that tall.
+ */
+@layer composition {
+  .cover {
+    --_space: var(--space-m);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--_space);
+    min-block-size: var(--cover-min, 100dvh);
+  }
+
+  .cover > [data-principal] {
+    margin-block: auto;
+  }
+}
+
+/**
+ * @composition frame
+ * @purpose Crops media to an aspect ratio, so a row of images or videos lines up whatever their sizes.
+ * @markup
+ *   <div class="frame" style="max-inline-size: 20rem" {{state}}>
+ *     <div>Media is cropped to 16:9</div>
+ *   </div>
+ * @props
+ *   --frame-ratio — The aspect ratio. Default: 16 / 9.
+ * @do Put one img, video, canvas or iframe inside; it is scaled to cover the frame.
+ * @dont Set a fixed height on the frame; the ratio gives it one.
+ */
+@layer composition {
+  .frame {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    aspect-ratio: var(--frame-ratio, 16 / 9);
+    overflow: hidden;
+  }
+
+  .frame > :is(img, video, canvas, iframe) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+}
+
+/**
+ * @composition reel
+ * @purpose A row that scrolls sideways instead of wrapping, for a strip of items that should stay on one line.
+ * @markup
+ *   <div class="reel" style="--reel-item: 12rem" tabindex="0" role="group" aria-label="Example reel" {{state}}>
+ *     <div>One</div>
+ *     <div>Two</div>
+ *     <div>Three</div>
+ *     <div>Four</div>
+ *     <div>Five</div>
+ *     <div>Six</div>
+ *   </div>
+ * @states
+ *   data-space="l" — The space between items. Default: s.
+ * @props
+ *   --reel-item — Each item's width. Default: auto (its own width).
+ * @tokens --space-s --muted
+ * @do Give it tabindex="0", a role and a label, so it can be scrolled from the keyboard.
+ * @dont Hide the scrollbar; it is the only sign that there is more.
+ */
+@layer composition {
+  .reel {
+    --_space: var(--space-s);
+
+    display: flex;
+    gap: var(--_space);
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    scrollbar-color: var(--muted) transparent;
+    scrollbar-width: thin;
+  }
+
+  .reel > * {
+    flex: 0 0 var(--reel-item, auto);
+  }
+}
+
+/**
+ * @composition imposter
+ * @purpose Centres one element over its positioned parent, or over the viewport with data-fixed.
+ * @markup
+ *   <div style="position: relative; min-block-size: 9rem">
+ *     <p>Content underneath.</p>
+ *     <div class="imposter" {{state}}>Centred over it</div>
+ *   </div>
+ * @states
+ *   data-contain — Never larger than the parent, less a margin; scrolls inside if it has to.
+ *   data-fixed — Centred over the viewport instead of the parent.
+ * @tokens --space-m
+ * @do Give the parent position: relative.
+ * @dont Build a dialog with it; use the popover block on a dialog element, which traps focus and closes on Esc.
+ */
+@layer composition {
+  .imposter {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    translate: -50% -50%;
+  }
+
+  .imposter[data-fixed] {
+    position: fixed;
+  }
+
+  .imposter[data-contain] {
+    max-inline-size: calc(100% - var(--space-m) * 2);
+    max-block-size: calc(100% - var(--space-m) * 2);
+    overflow: auto;
+  }
+}
+
+/**
+ * @composition space
+ * @purpose The data-space attribute shared by stack, cluster, sidebar, switcher, grid, cover and reel: one
+ *   name for the space between children, taking any step or pair of the space scale.
+ * @markup
+ *   <div class="stack" data-space="l">
+ *     <div class="cluster" data-space="3xs"><div>Tight</div><div>cluster</div></div>
+ *     <div class="cluster" data-space="s-xl"><div>A pair grows</div><div>with the viewport</div></div>
+ *   </div>
+ * @do Use a pair (s-l, s-xl) where the space should grow between a phone and a desktop.
+ * @dont Write gap or margin with a raw length on a page; pick a step.
+ */
+@layer composition {
+  /* After the primitives, so an attribute wins over each primitive's own default at equal specificity. */
+  [data-space="3xs"] { --_space: var(--space-3xs); }
+  [data-space="2xs"] { --_space: var(--space-2xs); }
+  [data-space="xs"] { --_space: var(--space-xs); }
+  [data-space="s"] { --_space: var(--space-s); }
+  [data-space="m"] { --_space: var(--space-m); }
+  [data-space="l"] { --_space: var(--space-l); }
+  [data-space="xl"] { --_space: var(--space-xl); }
+  [data-space="2xl"] { --_space: var(--space-2xl); }
+  [data-space="3xl"] { --_space: var(--space-3xl); }
+  [data-space="3xs-2xs"] { --_space: var(--space-3xs-2xs); }
+  [data-space="2xs-xs"] { --_space: var(--space-2xs-xs); }
+  [data-space="xs-s"] { --_space: var(--space-xs-s); }
+  [data-space="s-m"] { --_space: var(--space-s-m); }
+  [data-space="m-l"] { --_space: var(--space-m-l); }
+  [data-space="l-xl"] { --_space: var(--space-l-xl); }
+  [data-space="xl-2xl"] { --_space: var(--space-xl-2xl); }
+  [data-space="2xl-3xl"] { --_space: var(--space-2xl-3xl); }
+  [data-space="s-l"] { --_space: var(--space-s-l); }
+  [data-space="s-xl"] { --_space: var(--space-s-xl); }
+}
+
+/**
+ * @block label
+ * @purpose The small uppercase label: field names, column heads, section heads. With data-rule it is a
+ *   section head, a label over a 1px rule.
+ * @markup
+ *   <h2 class="label" {{state}}>Recent runs</h2>
+ * @states
+ *   data-rule — A section head: the label sits over a rule that spans its container.
+ * @tokens --text-label --tracking-label --muted --space-2xs --rule
+ * @do Put it on the element that carries the meaning: a heading for a section head, a span inside a field.
+ * @dont Use it for sentences or body text; uppercase is for a few words.
+ */
+@layer components {
+  .label {
+    font-size: var(--text-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .label[data-rule] {
+    padding-block-end: var(--space-2xs);
+    border-block-end: 1px solid var(--rule);
+  }
+}
+
+/**
+ * @block display
+ * @purpose The display face, Montagu Slab Light, on anything that is not an h1: an app name, a dialog
+ *   title, a big numeral.
+ * @markup
+ *   <p class="display" {{state}}>Teleprompter</p>
+ * @states
+ *   data-size="display" — The largest size, for a page name or a big numeral. Default: the title size.
+ * @tokens --font-display --text-title --text-display --leading-display --tracking-display
+ * @do Keep it to one or two per view; it marks the name of the thing.
+ * @dont Set body text, labels or buttons in it.
+ */
+@layer components {
+  .display {
+    font-family: var(--font-display);
+    font-size: var(--text-title);
+    font-weight: 300;
+    font-optical-sizing: auto;
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    text-wrap: balance;
+  }
+
+  .display[data-size="display"] {
+    font-size: var(--text-display);
+  }
+}
+
+/**
+ * @block button
+ * @purpose An action. A view has one primary button, filled ink; everything secondary is a quiet text
+ *   button. Works on a button or a link.
+ * @markup
+ *   <button type="button" class="button" {{state}}>Start</button>
+ * @states
+ *   data-variant="primary" — Filled ink: the one main action in a view.
+ *   data-variant="quiet" — Muted text over a rule, turning to ink on hover: secondary actions such as Close or Undo.
+ *   disabled — Dimmed and not clickable. On a link, use aria-disabled="true".
+ * @tokens --control-pad-block --control-pad-inline --space-2xs --rule --bg --fg --hover --soft --muted --duration --ease
+ * @do Write the label as a verb: Start, Save, Download and install.
+ * @dont Put two primary buttons in one view, or use an ✕ where a quiet "Close" fits.
+ */
+@layer components {
+  .button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-2xs);
+    padding: var(--control-pad-block) var(--control-pad-inline);
+    border: 1px solid var(--rule);
+    border-radius: 0;
+    background-color: var(--bg);
+    color: var(--fg);
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color var(--duration) var(--ease),
+      border-color var(--duration) var(--ease),
+      color var(--duration) var(--ease);
+  }
+
+  .button:hover {
+    background-color: var(--hover);
+  }
+
+  .button[data-variant="primary"] {
+    border-color: var(--fg);
+    background-color: var(--fg);
+    color: var(--bg);
+    font-weight: 500;
+  }
+
+  .button[data-variant="primary"]:hover {
+    border-color: var(--soft);
+    background-color: var(--soft);
+  }
+
+  .button[data-variant="quiet"] {
+    padding: 0 0 1px;
+    border: 0;
+    border-block-end: 1px solid var(--rule);
+    background-color: transparent;
+    color: var(--muted);
+  }
+
+  .button[data-variant="quiet"]:hover {
+    border-color: var(--fg);
+    background-color: transparent;
+    color: var(--fg);
+  }
+
+  .button:disabled,
+  .button[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+/**
+ * @block field
+ * @purpose A form control with its name. Wrap the control in a label so no id is needed. A checkbox or
+ *   radio sits beside its text, which is muted until hovered.
+ * @markup
+ *   <label class="field" {{state}}>
+ *     <span class="label">Speech model</span>
+ *     <select><option>Apple (on-device)</option><option>No voice: fixed speed</option></select>
+ *   </label>
+ * @states
+ *   data-layout="inline" — The name sits beside the control instead of above it.
+ * @tokens --space-3xs --space-2xs --muted --fg --duration --ease
+ * @do Name a text field with a label block; name a checkbox with plain text after the input.
+ * @dont Use a placeholder as the only name of a field.
+ */
+@layer components {
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xs);
+  }
+
+  .field[data-layout="inline"],
+  .field:has(> input:is([type="checkbox"], [type="radio"])) {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-2xs);
+  }
+
+  .field:has(> input:is([type="checkbox"], [type="radio"])) {
+    color: var(--muted);
+    cursor: pointer;
+    user-select: none;
+    transition: color var(--duration) var(--ease);
+  }
+
+  .field:has(> input:is([type="checkbox"], [type="radio"])):hover {
+    color: var(--fg);
+  }
+}
+
+/**
+ * @block dot
+ * @purpose A small round status dot. Colour means state only: teal for ok or live, yellow for asking or
+ *   loading, red for trouble, muted grey for idle.
+ * @markup
+ *   <span class="cluster" data-space="2xs"><span class="dot" {{state}}></span> Speech model</span>
+ * @states
+ *   data-state="ok" — Ok, live, listening.
+ *   data-state="ask" — Asking, loading, paused, needs attention.
+ *   data-state="trouble" — An error or a failed run.
+ * @props
+ *   --dot-size — The dot's diameter. Default: 0.5em.
+ * @tokens --muted --ok --ask --trouble --duration --ease
+ * @do Put the state in words next to the dot, or give a lone dot role="img" and an aria-label.
+ * @dont Use these colours for decoration or branding.
+ */
+@layer components {
+  .dot {
+    display: inline-block;
+    flex-shrink: 0;
+    inline-size: var(--dot-size, 0.5em);
+    block-size: var(--dot-size, 0.5em);
+    border-radius: 50%;
+    background-color: var(--muted);
+    transition: background-color var(--duration) var(--ease);
+  }
+
+  .dot[data-state="ok"] { background-color: var(--ok); }
+  .dot[data-state="ask"] { background-color: var(--ask); }
+  .dot[data-state="trouble"] { background-color: var(--trouble); }
+}
+
+/**
+ * @block toolbar
+ * @purpose A row of controls over a rule, between a view's title and its content. It wraps on a narrow screen.
+ * @markup
+ *   <div class="toolbar" role="group" aria-label="Script controls">
+ *     <label class="field" data-layout="inline">
+ *       <span class="label">Speech model</span>
+ *       <select><option>Apple (on-device)</option></select>
+ *     </label>
+ *     <button type="button" class="button" data-variant="quiet">Other models</button>
+ *     <button type="button" class="button" data-variant="primary" data-push="end">Start</button>
+ *   </div>
+ * @tokens --space-xs --space-m --space-s --rule
+ * @do Add data-push="end" to the primary action to send it to the far end.
+ * @dont Give it role="toolbar"; that role promises arrow-key navigation this block does not add.
+ */
+@layer components {
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-xs) var(--space-m);
+    padding-block-end: var(--space-s);
+    border-block-end: 1px solid var(--rule);
+  }
+
+  .toolbar > [data-push="end"] {
+    margin-inline-start: auto;
+  }
+}
+
+/**
+ * @block nav
+ * @purpose A row of links between a site's or a tool's views. The current view is ink over a rule; the
+ *   others are muted.
+ * @markup
+ *   <nav class="nav" aria-label="Views">
+ *     <a href="#block-nav" aria-current="page">Brief</a>
+ *     <a href="#block-nav">Routines</a>
+ *     <a href="#block-nav">Ledger</a>
+ *   </nav>
+ * @tokens --space-2xs --space-m --muted --fg --duration --ease
+ * @do Mark the current view with aria-current="page"; that attribute is the state.
+ * @dont Add an "active" class; assistive technology cannot read a class.
+ */
+@layer components {
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2xs) var(--space-m);
+  }
+
+  .nav a {
+    padding-block-end: 2px;
+    border-block-end: 1px solid transparent;
+    color: var(--muted);
+    text-decoration: none;
+    transition:
+      border-color var(--duration) var(--ease),
+      color var(--duration) var(--ease);
+  }
+
+  .nav a:hover {
+    color: var(--fg);
+  }
+
+  .nav a[aria-current="page"] {
+    border-color: var(--fg);
+    color: var(--fg);
+  }
+}
+
+/**
+ * @block popover
+ * @purpose A panel over the page for settings or detail: an ink border, a soft shadow, a display title and
+ *   a quiet Close. On a dialog element it is modal; on an element with the popover attribute it is light
+ *   and closes when you click away. Both open and close with no JavaScript.
+ * @markup
+ *   <button type="button" class="button" commandfor="{{id}}" command="show-modal">Other models</button>
+ *   <dialog class="popover" id="{{id}}" aria-labelledby="{{id}}-title">
+ *     <header>
+ *       <h2 id="{{id}}-title">Other models</h2>
+ *       <form method="dialog"><button class="button" data-variant="quiet">Close</button></form>
+ *     </header>
+ *     <div class="stack">
+ *       <p>Apple's on-device model is the default and needs no download.</p>
+ *     </div>
+ *   </dialog>
+ * @states
+ *   data-anchor — On a popover-attribute panel: opens beside the button that opened it, not in the middle of the page.
+ * @props
+ *   --popover-width — The panel's width. Default: 35rem, never wider than the screen less a margin.
+ * @tokens --bg --fg --shadow --backdrop --space-m --space-3xs --space-s --space-2xs --font-display --text-title --leading-display --tracking-display
+ * @do Open a dialog with commandfor and command="show-modal", and a light panel with popovertarget.
+ * @dont Close it with an ✕ icon, nest one in another, or rebuild it from divs; the native elements trap
+ *   focus and close on Esc.
+ */
+@layer components {
+  .popover {
+    inline-size: min(var(--popover-width, 35rem), 100vw - var(--space-s) * 2);
+    max-block-size: calc(100dvh - var(--space-s) * 2);
+    padding: calc(var(--space-m) - var(--space-3xs)) var(--space-m) var(--space-m);
+    border: 1px solid var(--fg);
+    background-color: var(--bg);
+    color: var(--fg);
+    box-shadow: var(--shadow);
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+
+  .popover::backdrop {
+    background-color: var(--backdrop);
+  }
+
+  .popover > header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-s);
+    margin-block-end: var(--space-2xs);
+  }
+
+  .popover > header > :is(h1, h2, h3) {
+    font-family: var(--font-display);
+    font-size: var(--text-title);
+    font-weight: 300;
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+  }
+
+  /* Beside its button where the browser can anchor it; centred, as any popover, where it cannot. */
+  @supports (position-area: block-end) {
+    .popover[popover][data-anchor] {
+      inset: auto;
+      margin: var(--space-2xs) 0;   /* cm-allow: a top-layer panel has no caller to place it */
+      position-area: block-end span-inline-end;
+      position-try-fallbacks: flip-block, flip-inline;
+    }
+  }
+}
+
+/**
+ * @block theme-toggle
+ * @purpose The half-filled circle, top right, that flips the page between the light look and its dark
+ *   twin. The button inside a cm-theme-toggle element, which gives it its behaviour.
+ * @markup
+ *   <cm-theme-toggle>
+ *     <button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false">
+ *       <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/></svg>
+ *     </button>
+ *   </cm-theme-toggle>
+ * @tokens --muted --fg --duration --ease
+ * @nojs hidden — Without JavaScript the toggle is not shown and the page follows the system setting.
+ * @do Put it at the end of the page's title row, once per page.
+ * @dont Add a label next to it or a third "system" state; choosing the system's own look again forgets the choice.
+ */
+@layer components {
+  .theme-toggle {
+    display: inline-flex;
+    padding: 4px;
+    border: 0;
+    border-radius: 50%;
+    background-color: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color var(--duration) var(--ease);
+  }
+
+  .theme-toggle:hover {
+    background-color: transparent;
+    color: var(--fg);
+  }
+
+  .theme-toggle svg {
+    display: block;
+  }
+
+  .theme-toggle[aria-pressed="true"] svg {
+    rotate: 180deg;
+  }
+
+  /* Without its script the button would do nothing, so it is not shown; its place in the row is kept. */
+  cm-theme-toggle:not(:defined) {
+    visibility: hidden;
+  }
+}
+
+/**
+ * @utility visually-hidden
+ * @purpose Hides text from the screen but keeps it for screen readers: a name for an icon button, a
+ *   heading for a section that needs none visually.
+ * @markup
+ *   <p>The next words are read aloud but not shown<span class="visually-hidden">: here they are</span>.</p>
+ */
+@layer utils {
+  .visually-hidden {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/**
+ * @utility tone
+ * @purpose Text colour by role: muted or soft for quiet text, and the three state colours in their
+ *   text-safe shades. State colours are for state, never decoration.
+ * @markup
+ *   <div class="stack" data-space="3xs">
+ *     <p class="tone-soft">Soft: a lead or a secondary paragraph.</p>
+ *     <p class="tone-muted">Muted: meta, hints, counts.</p>
+ *     <p class="tone-ok">Ok: installed, done, live.</p>
+ *     <p class="tone-ask">Ask: waiting on you, loading.</p>
+ *     <p class="tone-trouble">Trouble: it failed.</p>
+ *   </div>
+ */
+@layer utils {
+  .tone-soft { color: var(--soft); }
+  .tone-muted { color: var(--muted); }
+  .tone-ok { color: var(--ok-ink); }
+  .tone-ask { color: var(--ask-ink); }
+  .tone-trouble { color: var(--trouble); }
+}
+
+/**
+ * @utility tabular
+ * @purpose Numerals of equal width, so a number that changes does not shift its neighbours and columns
+ *   line up. Tables, time and output elements have it already.
+ * @markup
+ *   <p class="tabular">1,204 words · about 9 min</p>
+ */
+@layer utils {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/**
+ * @utility measure
+ * @purpose Keeps running text to a readable line length (--measure, 65 characters).
+ * @markup
+ *   <p class="measure">A paragraph that would otherwise run the full width of a wide container stops at a comfortable line length, however wide the page gets, because long lines are hard to follow back to the start of the next one.</p>
+ */
+@layer utils {
+  .measure {
+    max-inline-size: var(--measure);
+  }
+}

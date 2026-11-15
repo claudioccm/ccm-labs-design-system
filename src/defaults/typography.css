@@ -1,0 +1,116 @@
+/**
+ * @base typography
+ * @purpose Text elements with no class. h1 is the display face (a page or app name); other headings are
+ *   Switzer at weight 500. A link with no class is ink over a 1px rule, turning muted on hover.
+ * @markup
+ *   <div class="stack">
+ *     <h1>Page name</h1>
+ *     <h2>Section heading</h2>
+ *     <h3>Smaller heading</h3>
+ *     <p>Body text with <a href="#base-typography">a link</a>, <strong>strong text</strong>, <code>code</code> and <kbd>Esc</kbd>.</p>
+ *     <ul>
+ *       <li>A list item</li>
+ *       <li>Another one</li>
+ *     </ul>
+ *     <blockquote>A quotation sits behind a single ink rule.</blockquote>
+ *     <hr>
+ *     <pre><code>const quiet = true;</code></pre>
+ *   </div>
+ */
+@layer defaults {
+  h1, h2, h3, h4, h5, h6 {
+    line-height: var(--leading-tight);
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-display);
+    font-weight: 300;
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+  }
+
+  h2 {
+    font-size: var(--text-title);
+    font-weight: 500;
+    letter-spacing: var(--tracking-display);
+  }
+
+  h3 {
+    font-size: var(--text-lead);
+    font-weight: 500;
+  }
+
+  h4, h5, h6 {
+    font-size: var(--text-body);
+    font-weight: 600;
+  }
+
+  p, li, dd, figcaption {
+    text-wrap: pretty;
+  }
+
+  /* Links are ink over a rule (a border, not text-decoration). Anything with a class styles itself. */
+  a:not([class]) {
+    color: var(--fg);
+    text-decoration: none;
+    border-block-end: 1px solid currentColor;
+    transition: color var(--duration) var(--ease);
+  }
+
+  a:not([class]):hover {
+    color: var(--muted);
+  }
+
+  strong, b {
+    font-weight: 600;
+  }
+
+  small {
+    font-size: var(--text-label);
+  }
+
+  ul:not([role="list"]),
+  ol:not([role="list"]) {
+    padding-inline-start: 1.25em;
+  }
+
+  hr {
+    block-size: 0;
+    margin: 0;
+    border: 0;
+    border-block-start: 1px solid var(--rule);
+  }
+
+  blockquote {
+    padding-inline-start: var(--space-s);
+    border-inline-start: 1px solid var(--fg);
+  }
+
+  code, kbd, samp, pre {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+  }
+
+  pre {
+    padding: var(--space-s);
+    border: 1px solid var(--rule);
+    overflow-x: auto;
+    line-height: 1.5;
+    tab-size: 2;
+  }
+
+  kbd {
+    padding: 0 0.35em;
+    border: 1px solid var(--rule);
+  }
+
+  summary {
+    cursor: pointer;
+  }
+
+  time, output {
+    font-variant-numeric: tabular-nums;
+  }
+}

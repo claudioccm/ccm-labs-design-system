@@ -1,0 +1,673 @@
+# ccm-labs-design-system
+
+> The house design system for Claudio's pet projects: CUBE CSS, Utopia tokens, Every Layout composition and light-DOM custom elements. Version 0.1.0.
+
+The contract is HTML: class names, data attributes and the tokens a block reads. Read AGENTS.md before
+writing markup; it holds the rules and the head snippet. Each entry below is documented in a header comment
+at the top of its source file. llms-full.txt has every header in one file.
+
+## Tokens
+
+### palette
+
+The raw colours of the house look. Primitives: only themes/theme.css reads them; everything else reads the roles it defines (--fg, --bg, --rule…).
+
+Source: src/tokens/color.css
+
+### type-scale
+
+Fluid type from utopia.fyi. Two scales share the --step-n names: "read" (the default: 16px to 17px body) for pages that are read, and data-density="tool" (12px to 14px body) for dense tools. Blocks read the --text-* roles, which point at the right step in each scale, so a block never knows which scale is active. Set data-density on the root, or on any element to switch one surface.
+
+Source: src/tokens/type.css
+
+```html
+<div data-density="tool" class="stack" data-space="2xs">
+  <p class="label">Tool density</p>
+  <p>The same markup at the dense scale, for a surface inside a reading page.</p>
+</div>
+```
+
+### space-scale
+
+Fluid space from utopia.fyi: the house scale 4 8 12 16 24 32 48 64 96 at a phone, growing a little with the type. One scale for both densities. Pairs (--space-s-l) grow from one step to another across the viewport; --gutter is the page's outer padding.
+
+Source: src/tokens/space.css
+
+### typefaces
+
+Two typefaces: Switzer (Fontshare, 300 to 600) for all text, Montagu Slab Light (Google) only for display: a page or app name, dialog titles, big numerals. The stylesheet does not load them; add the font links from AGENTS.md to the page's head.
+
+Source: src/tokens/font.css
+
+### controls-and-motion
+
+The focus ring, control padding and the one quiet transition. Control padding is in em, so a control tightens with the tool density's smaller type.
+
+Source: src/tokens/misc.css
+
+### theme
+
+Colour roles for the light look and its dark twin. The page follows the system setting; data-theme="light" or "dark" on the root (set by cm-theme-toggle) overrides it, and on any other element pins that surface to one look.
+
+Source: src/themes/theme.css
+
+```html
+<div data-theme="dark" class="stack" style="padding: var(--space-m)">
+  <p>Pinned to the dark twin, whatever the page is: for a surface read on camera or in the dark.</p>
+  <p class="tone-muted">Roles resolve again inside it.</p>
+</div>
+```
+
+## Base elements
+
+### reset
+
+A small modern reset (after Andy Bell's): border-box sizing, no default margins on text, media that fits its container, controls that inherit the page's type. Spacing between elements comes from composition (stack, cluster), never from an element's own margin.
+
+Source: src/reset/reset.css
+
+### page
+
+The page itself: ink on paper in Switzer at the body step, an inverted selection, one focus ring, and no motion for people who asked for none.
+
+Source: src/defaults/root.css
+
+### typography
+
+Text elements with no class. h1 is the display face (a page or app name); other headings are Switzer at weight 500. A link with no class is ink over a 1px rule, turning muted on hover.
+
+Source: src/defaults/typography.css
+
+```html
+<div class="stack">
+  <h1>Page name</h1>
+  <h2>Section heading</h2>
+  <h3>Smaller heading</h3>
+  <p>Body text with <a href="#base-typography">a link</a>, <strong>strong text</strong>, <code>code</code> and <kbd>Esc</kbd>.</p>
+  <ul>
+    <li>A list item</li>
+    <li>Another one</li>
+  </ul>
+  <blockquote>A quotation sits behind a single ink rule.</blockquote>
+  <hr>
+  <pre><code>const quiet = true;</code></pre>
+</div>
+```
+
+### controls
+
+Native form controls with no class: square, one rule colour. Hovering a field turns its border muted and the field you are in takes the ink. A plain button has a rule border; for the main action or a quiet one, see the button block.
+
+Source: src/defaults/controls.css
+
+```html
+<div class="cluster">
+  <input type="text" placeholder="Text" aria-label="Text">
+  <select aria-label="Choice"><option>One</option><option>Two</option></select>
+  <button type="button">Button</button>
+  <input type="checkbox" checked aria-label="Checked">
+  <input type="radio" checked aria-label="Chosen">
+  <progress value="0.6" aria-label="Progress"></progress>
+</div>
+```
+
+### table
+
+Tables with no class: column heads as small uppercase labels, one rule under each row, tabular numerals so columns of numbers line up.
+
+Source: src/defaults/tables.css
+
+```html
+<table>
+  <thead><tr><th>Routine</th><th>Runs</th><th>Last</th></tr></thead>
+  <tbody>
+    <tr><td>Morning brief</td><td>31</td><td>05:02</td></tr>
+    <tr><td>Label inbox</td><td>128</td><td>05:00</td></tr>
+  </tbody>
+</table>
+```
+
+## Composition
+
+### stack
+
+Children in a column with one space between them. The default way to space anything vertically.
+
+Source: src/composition/stack.css
+
+```html
+<div class="stack">
+  <div>One</div>
+  <div>Two</div>
+  <div>Three</div>
+</div>
+```
+
+States:
+- `data-space="xs"`: The space between children: any step or pair of the space scale. Default: s.
+- `data-align="start"`: Children keep their own width (start, center or end) instead of stretching.
+
+Tokens: `--space-s`
+
+Do: Nest stacks with different data-space values to group related things.
+
+Don't: Put margins on the children; the stack owns the space between them.
+
+### cluster
+
+Things in a row that wrap when they run out of room: buttons, a title and its actions, meta.
+
+Source: src/composition/cluster.css
+
+```html
+<div class="cluster">
+  <div>One</div>
+  <div>Two</div>
+  <div>Three</div>
+</div>
+```
+
+States:
+- `data-space="xs"`: The space between children, across and down. Default: s.
+- `data-justify="between"`: First child to the start, last to the end (also: center, end).
+- `data-align="baseline"`: Align on the text baseline (also: start, end, stretch). Default: center.
+
+Tokens: `--space-s`
+
+Do: Add data-push="end" to a child to send it, and everything after it, to the far end.
+
+Don't: Use it for page columns; that is sidebar, switcher or grid.
+
+### center
+
+A centred column with a maximum width. With data-gutter it is the page wrapper.
+
+Source: src/composition/center.css
+
+```html
+<div class="center">
+  <div>A column no wider than the measure, centred in its parent.</div>
+</div>
+```
+
+States:
+- `data-gutter`: Adds the page's outer padding (--gutter) on both sides.
+
+Properties:
+- `--center-max`: The maximum width. Default: --measure (65ch).
+
+Tokens: `--measure` `--gutter`
+
+Do: Set --center-max on the element for a wider page: style="--center-max: 65rem".
+
+Don't: Nest a center in a center to add padding; use data-gutter once, on the outer one.
+
+### sidebar
+
+Two columns, one narrow and one that takes the rest. They stack when the wide one would get narrower than its minimum, with no breakpoint.
+
+Source: src/composition/sidebar.css
+
+```html
+<div class="sidebar">
+  <div>Sidebar</div>
+  <div>Content, which takes the remaining width.</div>
+</div>
+```
+
+States:
+- `data-side="end"`: The narrow column is the last child instead of the first.
+- `data-space="l"`: The space between the two. Default: m.
+
+Properties:
+- `--sidebar-width`: The narrow column's ideal width. Default: 16rem.
+- `--sidebar-content-min`: The wide column's minimum share before they stack. Default: 55%.
+
+Tokens: `--space-m`
+
+Do: Give it exactly two children.
+
+Don't: Add a media query to stack the columns; change --sidebar-content-min.
+
+### switcher
+
+Equal columns that all switch to a single column at once when the container gets narrower than a threshold.
+
+Source: src/composition/switcher.css
+
+```html
+<div class="switcher">
+  <div>One</div>
+  <div>Two</div>
+  <div>Three</div>
+</div>
+```
+
+States:
+- `data-space="l"`: The space between children. Default: m.
+
+Properties:
+- `--switcher-threshold`: The container width below which the children stack. Default: 30rem.
+
+Tokens: `--space-m`
+
+Do: Use it for two to four equal things; it never leaves one alone on a row.
+
+Don't: Use it for a list of unknown length; that is grid.
+
+### grid
+
+As many equal columns as fit, each at least a minimum width. For lists of cards or tiles.
+
+Source: src/composition/grid.css
+
+```html
+<div class="grid">
+  <div>One</div>
+  <div>Two</div>
+  <div>Three</div>
+  <div>Four</div>
+</div>
+```
+
+States:
+- `data-space="l"`: The space between cells. Default: m.
+
+Properties:
+- `--grid-min`: The narrowest a column may get. Default: 16rem.
+
+Tokens: `--space-m`
+
+Do: Set --grid-min to the narrowest width at which one cell still reads well.
+
+Don't: Write grid-template-columns: repeat(3, 1fr) on a page; set --grid-min instead.
+
+### cover
+
+A full-height column: one child, marked data-principal, sits in the vertical centre, with an optional header above and footer below.
+
+Source: src/composition/cover.css
+
+```html
+<div class="cover" style="--cover-min: 14rem">
+  <div>Header</div>
+  <div data-principal>The principal child, centred in the space left over.</div>
+  <div>Footer</div>
+</div>
+```
+
+States:
+- `data-space="l"`: The minimum space between the children. Default: m.
+
+Properties:
+- `--cover-min`: The minimum height. Default: 100dvh.
+
+Tokens: `--space-m`
+
+Do: Mark exactly one child data-principal.
+
+Don't: Use it only to make a page fill the screen; the body is already at least that tall.
+
+### frame
+
+Crops media to an aspect ratio, so a row of images or videos lines up whatever their sizes.
+
+Source: src/composition/frame.css
+
+```html
+<div class="frame" style="max-inline-size: 20rem">
+  <div>Media is cropped to 16:9</div>
+</div>
+```
+
+Properties:
+- `--frame-ratio`: The aspect ratio. Default: 16 / 9.
+
+Do: Put one img, video, canvas or iframe inside; it is scaled to cover the frame.
+
+Don't: Set a fixed height on the frame; the ratio gives it one.
+
+### reel
+
+A row that scrolls sideways instead of wrapping, for a strip of items that should stay on one line.
+
+Source: src/composition/reel.css
+
+```html
+<div class="reel" style="--reel-item: 12rem" tabindex="0" role="group" aria-label="Example reel">
+  <div>One</div>
+  <div>Two</div>
+  <div>Three</div>
+  <div>Four</div>
+  <div>Five</div>
+  <div>Six</div>
+</div>
+```
+
+States:
+- `data-space="l"`: The space between items. Default: s.
+
+Properties:
+- `--reel-item`: Each item's width. Default: auto (its own width).
+
+Tokens: `--space-s` `--muted`
+
+Do: Give it tabindex="0", a role and a label, so it can be scrolled from the keyboard.
+
+Don't: Hide the scrollbar; it is the only sign that there is more.
+
+### imposter
+
+Centres one element over its positioned parent, or over the viewport with data-fixed.
+
+Source: src/composition/imposter.css
+
+```html
+<div style="position: relative; min-block-size: 9rem">
+  <p>Content underneath.</p>
+  <div class="imposter">Centred over it</div>
+</div>
+```
+
+States:
+- `data-contain`: Never larger than the parent, less a margin; scrolls inside if it has to.
+- `data-fixed`: Centred over the viewport instead of the parent.
+
+Tokens: `--space-m`
+
+Do: Give the parent position: relative.
+
+Don't: Build a dialog with it; use the popover block on a dialog element, which traps focus and closes on Esc.
+
+### space
+
+The data-space attribute shared by stack, cluster, sidebar, switcher, grid, cover and reel: one name for the space between children, taking any step or pair of the space scale.
+
+Source: src/composition/space.css
+
+```html
+<div class="stack" data-space="l">
+  <div class="cluster" data-space="3xs"><div>Tight</div><div>cluster</div></div>
+  <div class="cluster" data-space="s-xl"><div>A pair grows</div><div>with the viewport</div></div>
+</div>
+```
+
+Do: Use a pair (s-l, s-xl) where the space should grow between a phone and a desktop.
+
+Don't: Write gap or margin with a raw length on a page; pick a step.
+
+## Blocks
+
+### label
+
+The small uppercase label: field names, column heads, section heads. With data-rule it is a section head, a label over a 1px rule.
+
+Source: src/components/label.css
+
+```html
+<h2 class="label">Recent runs</h2>
+```
+
+States:
+- `data-rule`: A section head: the label sits over a rule that spans its container.
+
+Tokens: `--text-label` `--tracking-label` `--muted` `--space-2xs` `--rule`
+
+Do: Put it on the element that carries the meaning: a heading for a section head, a span inside a field.
+
+Don't: Use it for sentences or body text; uppercase is for a few words.
+
+### display
+
+The display face, Montagu Slab Light, on anything that is not an h1: an app name, a dialog title, a big numeral.
+
+Source: src/components/display.css
+
+```html
+<p class="display">Teleprompter</p>
+```
+
+States:
+- `data-size="display"`: The largest size, for a page name or a big numeral. Default: the title size.
+
+Tokens: `--font-display` `--text-title` `--text-display` `--leading-display` `--tracking-display`
+
+Do: Keep it to one or two per view; it marks the name of the thing.
+
+Don't: Set body text, labels or buttons in it.
+
+### button
+
+An action. A view has one primary button, filled ink; everything secondary is a quiet text button. Works on a button or a link.
+
+Source: src/components/button.css
+
+```html
+<button type="button" class="button">Start</button>
+```
+
+States:
+- `data-variant="primary"`: Filled ink: the one main action in a view.
+- `data-variant="quiet"`: Muted text over a rule, turning to ink on hover: secondary actions such as Close or Undo.
+- `disabled`: Dimmed and not clickable. On a link, use aria-disabled="true".
+
+Tokens: `--control-pad-block` `--control-pad-inline` `--space-2xs` `--rule` `--bg` `--fg` `--hover` `--soft` `--muted` `--duration` `--ease`
+
+Do: Write the label as a verb: Start, Save, Download and install.
+
+Don't: Put two primary buttons in one view, or use an ✕ where a quiet "Close" fits.
+
+### field
+
+A form control with its name. Wrap the control in a label so no id is needed. A checkbox or radio sits beside its text, which is muted until hovered.
+
+Source: src/components/field.css
+
+```html
+<label class="field">
+  <span class="label">Speech model</span>
+  <select><option>Apple (on-device)</option><option>No voice: fixed speed</option></select>
+</label>
+```
+
+States:
+- `data-layout="inline"`: The name sits beside the control instead of above it.
+
+Tokens: `--space-3xs` `--space-2xs` `--muted` `--fg` `--duration` `--ease`
+
+Do: Name a text field with a label block; name a checkbox with plain text after the input.
+
+Don't: Use a placeholder as the only name of a field.
+
+### dot
+
+A small round status dot. Colour means state only: teal for ok or live, yellow for asking or loading, red for trouble, muted grey for idle.
+
+Source: src/components/dot.css
+
+```html
+<span class="cluster" data-space="2xs"><span class="dot"></span> Speech model</span>
+```
+
+States:
+- `data-state="ok"`: Ok, live, listening.
+- `data-state="ask"`: Asking, loading, paused, needs attention.
+- `data-state="trouble"`: An error or a failed run.
+
+Properties:
+- `--dot-size`: The dot's diameter. Default: 0.5em.
+
+Tokens: `--muted` `--ok` `--ask` `--trouble` `--duration` `--ease`
+
+Do: Put the state in words next to the dot, or give a lone dot role="img" and an aria-label.
+
+Don't: Use these colours for decoration or branding.
+
+### toolbar
+
+A row of controls over a rule, between a view's title and its content. It wraps on a narrow screen.
+
+Source: src/components/toolbar.css
+
+```html
+<div class="toolbar" role="group" aria-label="Script controls">
+  <label class="field" data-layout="inline">
+    <span class="label">Speech model</span>
+    <select><option>Apple (on-device)</option></select>
+  </label>
+  <button type="button" class="button" data-variant="quiet">Other models</button>
+  <button type="button" class="button" data-variant="primary" data-push="end">Start</button>
+</div>
+```
+
+Tokens: `--space-xs` `--space-m` `--space-s` `--rule`
+
+Do: Add data-push="end" to the primary action to send it to the far end.
+
+Don't: Give it role="toolbar"; that role promises arrow-key navigation this block does not add.
+
+### nav
+
+A row of links between a site's or a tool's views. The current view is ink over a rule; the others are muted.
+
+Source: src/components/nav.css
+
+```html
+<nav class="nav" aria-label="Views">
+  <a href="#block-nav" aria-current="page">Brief</a>
+  <a href="#block-nav">Routines</a>
+  <a href="#block-nav">Ledger</a>
+</nav>
+```
+
+Tokens: `--space-2xs` `--space-m` `--muted` `--fg` `--duration` `--ease`
+
+Do: Mark the current view with aria-current="page"; that attribute is the state.
+
+Don't: Add an "active" class; assistive technology cannot read a class.
+
+### popover
+
+A panel over the page for settings or detail: an ink border, a soft shadow, a display title and a quiet Close. On a dialog element it is modal; on an element with the popover attribute it is light and closes when you click away. Both open and close with no JavaScript.
+
+Source: src/components/popover.css
+
+```html
+<button type="button" class="button" commandfor="example" command="show-modal">Other models</button>
+<dialog class="popover" id="example" aria-labelledby="example-title">
+  <header>
+    <h2 id="example-title">Other models</h2>
+    <form method="dialog"><button class="button" data-variant="quiet">Close</button></form>
+  </header>
+  <div class="stack">
+    <p>Apple's on-device model is the default and needs no download.</p>
+  </div>
+</dialog>
+```
+
+States:
+- `data-anchor`: On a popover-attribute panel: opens beside the button that opened it, not in the middle of the page.
+
+Properties:
+- `--popover-width`: The panel's width. Default: 35rem, never wider than the screen less a margin.
+
+Tokens: `--bg` `--fg` `--shadow` `--backdrop` `--space-m` `--space-3xs` `--space-s` `--space-2xs` `--font-display` `--text-title` `--leading-display` `--tracking-display`
+
+Do: Open a dialog with commandfor and command="show-modal", and a light panel with popovertarget.
+
+Don't: Close it with an ✕ icon, nest one in another, or rebuild it from divs; the native elements trap focus and close on Esc.
+
+### theme-toggle
+
+The half-filled circle, top right, that flips the page between the light look and its dark twin. The button inside a cm-theme-toggle element, which gives it its behaviour.
+
+Source: src/components/theme-toggle.css
+
+```html
+<cm-theme-toggle>
+  <button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false">
+    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/></svg>
+  </button>
+</cm-theme-toggle>
+```
+
+Tokens: `--muted` `--fg` `--duration` `--ease`
+
+Without JavaScript: hidden — Without JavaScript the toggle is not shown and the page follows the system setting.
+
+Do: Put it at the end of the page's title row, once per page.
+
+Don't: Add a label next to it or a third "system" state; choosing the system's own look again forgets the choice.
+
+## Custom elements
+
+### cm-theme-toggle
+
+The behaviour of the theme toggle: flips data-theme on the root between light and dark, keeps aria-pressed on its button in step, and stores the choice under "cm-theme" in localStorage.
+
+Source: src/elements/cm-theme-toggle.js
+
+```html
+<cm-theme-toggle>
+  <button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false">
+    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/></svg>
+  </button>
+</cm-theme-toggle>
+```
+
+Events:
+- {CustomEvent<{theme: 'light' | 'dark'}>} cm-theme-change - On the document, after the theme flips.
+
+Without JavaScript: hidden — Without JavaScript the toggle is not shown and the page follows the system setting.
+
+Do: Load theme-init.js in the head as well, so a stored choice is applied before the page paints.
+
+Don't: Give it anything but one button to wrap, or set data-theme on the root from your own code.
+
+## Utilities
+
+### visually-hidden
+
+Hides text from the screen but keeps it for screen readers: a name for an icon button, a heading for a section that needs none visually.
+
+Source: src/utils/utils.css
+
+```html
+<p>The next words are read aloud but not shown<span class="visually-hidden">: here they are</span>.</p>
+```
+
+### tone
+
+Text colour by role: muted or soft for quiet text, and the three state colours in their text-safe shades. State colours are for state, never decoration.
+
+Source: src/utils/utils.css
+
+```html
+<div class="stack" data-space="3xs">
+  <p class="tone-soft">Soft: a lead or a secondary paragraph.</p>
+  <p class="tone-muted">Muted: meta, hints, counts.</p>
+  <p class="tone-ok">Ok: installed, done, live.</p>
+  <p class="tone-ask">Ask: waiting on you, loading.</p>
+  <p class="tone-trouble">Trouble: it failed.</p>
+</div>
+```
+
+### tabular
+
+Numerals of equal width, so a number that changes does not shift its neighbours and columns line up. Tables, time and output elements have it already.
+
+Source: src/utils/utils.css
+
+```html
+<p class="tabular">1,204 words · about 9 min</p>
+```
+
+### measure
+
+Keeps running text to a readable line length (--measure, 65 characters).
+
+Source: src/utils/utils.css
+
+```html
+<p class="measure">A paragraph that would otherwise run the full width of a wide container stops at a comfortable line length, however wide the page gets, because long lines are hard to follow back to the start of the next one.</p>
+```

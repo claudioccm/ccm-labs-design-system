@@ -1,0 +1,37 @@
+/**
+ * @token space-scale
+ * @purpose Fluid space from utopia.fyi: the house scale 4 8 12 16 24 32 48 64 96 at a phone, growing a little
+ *   with the type. One scale for both densities. Pairs (--space-s-l) grow from one step to another across the
+ *   viewport; --gutter is the page's outer padding.
+ * @render space
+ */
+@layer tokens {
+  :root {
+    /* utopia:space https://utopia.fyi/space/calculator?c=360,16,1.2,1440,17,1.25,9,2&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l|s-xl */
+    --space-3xs: clamp(0.25rem, 0.25rem + 0vw, 0.25rem);
+    --space-2xs: clamp(0.5rem, 0.4792rem + 0.0926vw, 0.5625rem);
+    --space-xs: clamp(0.75rem, 0.7292rem + 0.0926vw, 0.8125rem);
+    --space-s: clamp(1rem, 0.9792rem + 0.0926vw, 1.0625rem);
+    --space-m: clamp(1.5rem, 1.4583rem + 0.1852vw, 1.625rem);
+    --space-l: clamp(2rem, 1.9583rem + 0.1852vw, 2.125rem);
+    --space-xl: clamp(3rem, 2.9375rem + 0.2778vw, 3.1875rem);
+    --space-2xl: clamp(4rem, 3.9167rem + 0.3704vw, 4.25rem);
+    --space-3xl: clamp(6rem, 5.875rem + 0.5556vw, 6.375rem);
+    /* One-up pairs */
+    --space-3xs-2xs: clamp(0.25rem, 0.1458rem + 0.463vw, 0.5625rem);
+    --space-2xs-xs: clamp(0.5rem, 0.3958rem + 0.463vw, 0.8125rem);
+    --space-xs-s: clamp(0.75rem, 0.6458rem + 0.463vw, 1.0625rem);
+    --space-s-m: clamp(1rem, 0.7917rem + 0.9259vw, 1.625rem);
+    --space-m-l: clamp(1.5rem, 1.2917rem + 0.9259vw, 2.125rem);
+    --space-l-xl: clamp(2rem, 1.6042rem + 1.7593vw, 3.1875rem);
+    --space-xl-2xl: clamp(3rem, 2.5833rem + 1.8519vw, 4.25rem);
+    --space-2xl-3xl: clamp(4rem, 3.2083rem + 3.5185vw, 6.375rem);
+    /* Custom pairs */
+    --space-s-l: clamp(1rem, 0.625rem + 1.6667vw, 2.125rem);
+    --space-s-xl: clamp(1rem, 0.2708rem + 3.2407vw, 3.1875rem);
+    /* utopia:end */
+
+    --gutter: var(--space-s-xl);
+    --measure: 65ch;
+  }
+}

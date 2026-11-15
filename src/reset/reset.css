@@ -1,0 +1,67 @@
+/**
+ * @base reset
+ * @purpose A small modern reset (after Andy Bell's): border-box sizing, no default margins on text, media
+ *   that fits its container, controls that inherit the page's type. Spacing between elements comes from
+ *   composition (stack, cluster), never from an element's own margin.
+ */
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -moz-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+  }
+
+  body, h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd, ul, ol, pre {
+    margin: 0;
+  }
+
+  ul[role="list"],
+  ol[role="list"] {
+    padding: 0;
+    list-style: none;
+  }
+
+  body {
+    min-block-size: 100dvh;
+  }
+
+  img, picture, video, canvas {
+    display: block;
+    max-inline-size: 100%;
+  }
+
+  img, video {
+    block-size: auto;
+  }
+
+  button, input, select, textarea {
+    font: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+  }
+
+  fieldset {
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  legend {
+    padding: 0;
+  }
+
+  :target {
+    scroll-margin-block: 5ex;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+}

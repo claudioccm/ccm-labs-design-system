@@ -1,0 +1,69 @@
+# ccm-labs-design-system
+
+> The house design system for Claudio's pet projects: CUBE CSS, Utopia tokens, Every Layout composition and light-DOM custom elements. Version 0.1.0.
+
+The contract is HTML: class names, data attributes and the tokens a block reads. Read AGENTS.md before
+writing markup; it holds the rules and the head snippet. Each entry below is documented in a header comment
+at the top of its source file. llms-full.txt has every header in one file.
+
+## Start here
+
+- [AGENTS.md](AGENTS.md): How to use the system and the rules that are enforced
+- [PRINCIPLES.md](PRINCIPLES.md): Why it is built this way
+- [dist/cm.css](dist/cm.css): The whole stylesheet, one file
+- [dist/cm.js](dist/cm.js): The custom elements
+- [llms-full.txt](llms-full.txt): Every entry below with its markup, states, tokens and do/don't
+
+## Tokens
+
+- [palette](src/tokens/color.css): The raw colours of the house look. Primitives: only themes/theme.css reads them; everything else reads the roles it defines (--fg, --bg, --rule…).
+- [type-scale](src/tokens/type.css): Fluid type from utopia.fyi. Two scales share the --step-n names: "read" (the default: 16px to 17px body) for pages that are read, and data-density="tool" (12px to 14px body) for dense tools. Blocks read the --text-* roles, which point at the right step in each scale, so a block never knows which scale is active. Set data-density on the root, or on any element to switch one surface.
+- [space-scale](src/tokens/space.css): Fluid space from utopia.fyi: the house scale 4 8 12 16 24 32 48 64 96 at a phone, growing a little with the type. One scale for both densities. Pairs (--space-s-l) grow from one step to another across the viewport; --gutter is the page's outer padding.
+- [typefaces](src/tokens/font.css): Two typefaces: Switzer (Fontshare, 300 to 600) for all text, Montagu Slab Light (Google) only for display: a page or app name, dialog titles, big numerals. The stylesheet does not load them; add the font links from AGENTS.md to the page's head.
+- [controls-and-motion](src/tokens/misc.css): The focus ring, control padding and the one quiet transition. Control padding is in em, so a control tightens with the tool density's smaller type.
+- [theme](src/themes/theme.css): Colour roles for the light look and its dark twin. The page follows the system setting; data-theme="light" or "dark" on the root (set by cm-theme-toggle) overrides it, and on any other element pins that surface to one look.
+
+## Base elements
+
+- [reset](src/reset/reset.css): A small modern reset (after Andy Bell's): border-box sizing, no default margins on text, media that fits its container, controls that inherit the page's type. Spacing between elements comes from composition (stack, cluster), never from an element's own margin.
+- [page](src/defaults/root.css): The page itself: ink on paper in Switzer at the body step, an inverted selection, one focus ring, and no motion for people who asked for none.
+- [typography](src/defaults/typography.css): Text elements with no class. h1 is the display face (a page or app name); other headings are Switzer at weight 500. A link with no class is ink over a 1px rule, turning muted on hover.
+- [controls](src/defaults/controls.css): Native form controls with no class: square, one rule colour. Hovering a field turns its border muted and the field you are in takes the ink. A plain button has a rule border; for the main action or a quiet one, see the button block.
+- [table](src/defaults/tables.css): Tables with no class: column heads as small uppercase labels, one rule under each row, tabular numerals so columns of numbers line up.
+
+## Composition
+
+- [stack](src/composition/stack.css): Children in a column with one space between them. The default way to space anything vertically.
+- [cluster](src/composition/cluster.css): Things in a row that wrap when they run out of room: buttons, a title and its actions, meta.
+- [center](src/composition/center.css): A centred column with a maximum width. With data-gutter it is the page wrapper.
+- [sidebar](src/composition/sidebar.css): Two columns, one narrow and one that takes the rest. They stack when the wide one would get narrower than its minimum, with no breakpoint.
+- [switcher](src/composition/switcher.css): Equal columns that all switch to a single column at once when the container gets narrower than a threshold.
+- [grid](src/composition/grid.css): As many equal columns as fit, each at least a minimum width. For lists of cards or tiles.
+- [cover](src/composition/cover.css): A full-height column: one child, marked data-principal, sits in the vertical centre, with an optional header above and footer below.
+- [frame](src/composition/frame.css): Crops media to an aspect ratio, so a row of images or videos lines up whatever their sizes.
+- [reel](src/composition/reel.css): A row that scrolls sideways instead of wrapping, for a strip of items that should stay on one line.
+- [imposter](src/composition/imposter.css): Centres one element over its positioned parent, or over the viewport with data-fixed.
+- [space](src/composition/space.css): The data-space attribute shared by stack, cluster, sidebar, switcher, grid, cover and reel: one name for the space between children, taking any step or pair of the space scale.
+
+## Blocks
+
+- [label](src/components/label.css): The small uppercase label: field names, column heads, section heads. With data-rule it is a section head, a label over a 1px rule.
+- [display](src/components/display.css): The display face, Montagu Slab Light, on anything that is not an h1: an app name, a dialog title, a big numeral.
+- [button](src/components/button.css): An action. A view has one primary button, filled ink; everything secondary is a quiet text button. Works on a button or a link.
+- [field](src/components/field.css): A form control with its name. Wrap the control in a label so no id is needed. A checkbox or radio sits beside its text, which is muted until hovered.
+- [dot](src/components/dot.css): A small round status dot. Colour means state only: teal for ok or live, yellow for asking or loading, red for trouble, muted grey for idle.
+- [toolbar](src/components/toolbar.css): A row of controls over a rule, between a view's title and its content. It wraps on a narrow screen.
+- [nav](src/components/nav.css): A row of links between a site's or a tool's views. The current view is ink over a rule; the others are muted.
+- [popover](src/components/popover.css): A panel over the page for settings or detail: an ink border, a soft shadow, a display title and a quiet Close. On a dialog element it is modal; on an element with the popover attribute it is light and closes when you click away. Both open and close with no JavaScript.
+- [theme-toggle](src/components/theme-toggle.css): The half-filled circle, top right, that flips the page between the light look and its dark twin. The button inside a cm-theme-toggle element, which gives it its behaviour.
+
+## Custom elements
+
+- [cm-theme-toggle](src/elements/cm-theme-toggle.js): The behaviour of the theme toggle: flips data-theme on the root between light and dark, keeps aria-pressed on its button in step, and stores the choice under "cm-theme" in localStorage.
+
+## Utilities
+
+- [visually-hidden](src/utils/utils.css): Hides text from the screen but keeps it for screen readers: a name for an icon button, a heading for a section that needs none visually.
+- [tone](src/utils/utils.css): Text colour by role: muted or soft for quiet text, and the three state colours in their text-safe shades. State colours are for state, never decoration.
+- [tabular](src/utils/utils.css): Numerals of equal width, so a number that changes does not shift its neighbours and columns line up. Tables, time and output elements have it already.
+- [measure](src/utils/utils.css): Keeps running text to a readable line length (--measure, 65 characters).

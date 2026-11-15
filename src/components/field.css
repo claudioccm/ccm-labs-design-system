@@ -1,0 +1,40 @@
+/**
+ * @block field
+ * @purpose A form control with its name. Wrap the control in a label so no id is needed. A checkbox or
+ *   radio sits beside its text, which is muted until hovered.
+ * @markup
+ *   <label class="field" {{state}}>
+ *     <span class="label">Speech model</span>
+ *     <select><option>Apple (on-device)</option><option>No voice: fixed speed</option></select>
+ *   </label>
+ * @states
+ *   data-layout="inline" — The name sits beside the control instead of above it.
+ * @tokens --space-3xs --space-2xs --muted --fg --duration --ease
+ * @do Name a text field with a label block; name a checkbox with plain text after the input.
+ * @dont Use a placeholder as the only name of a field.
+ */
+@layer components {
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xs);
+  }
+
+  .field[data-layout="inline"],
+  .field:has(> input:is([type="checkbox"], [type="radio"])) {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-2xs);
+  }
+
+  .field:has(> input:is([type="checkbox"], [type="radio"])) {
+    color: var(--muted);
+    cursor: pointer;
+    user-select: none;
+    transition: color var(--duration) var(--ease);
+  }
+
+  .field:has(> input:is([type="checkbox"], [type="radio"])):hover {
+    color: var(--fg);
+  }
+}

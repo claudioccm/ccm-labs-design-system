@@ -1,0 +1,45 @@
+/**
+ * @token theme
+ * @purpose Colour roles for the light look and its dark twin. The page follows the system setting;
+ *   data-theme="light" or "dark" on the root (set by cm-theme-toggle) overrides it, and on any other element
+ *   pins that surface to one look.
+ * @markup
+ *   <div data-theme="dark" class="stack" style="padding: var(--space-m)">
+ *     <p>Pinned to the dark twin, whatever the page is: for a surface read on camera or in the dark.</p>
+ *     <p class="tone-muted">Roles resolve again inside it.</p>
+ *   </div>
+ * @render swatch
+ */
+@layer themes {
+  /* light-dark() picks a side from the element's color-scheme, so the dark twin is written once and a pinned
+     surface only has to set color-scheme. */
+  :root {
+    color-scheme: light dark;
+
+    --bg: light-dark(var(--color-paper), var(--color-night));
+    --fg: light-dark(var(--color-ink), var(--color-snow));
+    --soft: light-dark(var(--color-ink-soft), var(--color-snow-soft));
+    --muted: light-dark(var(--color-ink-muted), var(--color-snow-muted));
+    --rule: light-dark(var(--color-ink-rule), var(--color-night-rule));
+    --hover: light-dark(var(--color-ink-hover), var(--color-night-hover));
+
+    /* Colour means state only: ok or live, asking or loading, trouble. The -ink ones are for text. */
+    --ok: light-dark(var(--color-teal), var(--color-teal-bright));
+    --ok-ink: light-dark(var(--color-teal-deep), var(--color-teal-bright));
+    --ask: light-dark(var(--color-yellow), var(--color-yellow-bright));
+    --ask-ink: light-dark(var(--color-yellow-deep), var(--color-yellow-bright));
+    --trouble: light-dark(var(--color-red), var(--color-red-bright));
+
+    --shadow: 0 12px 32px light-dark(var(--color-shade), var(--color-shade-deep));
+    --backdrop: light-dark(var(--color-scrim), var(--color-scrim-deep));
+  }
+
+  [data-theme="light"] { color-scheme: light; }
+  [data-theme="dark"] { color-scheme: dark; }
+
+  /* A pinned surface repaints itself: colour is inherited already resolved, so it has to be set again. */
+  [data-theme]:not(:root) {
+    background-color: var(--bg);
+    color: var(--fg);
+  }
+}

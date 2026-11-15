@@ -1,0 +1,68 @@
+/**
+ * @block popover
+ * @purpose A panel over the page for settings or detail: an ink border, a soft shadow, a display title and
+ *   a quiet Close. On a dialog element it is modal; on an element with the popover attribute it is light
+ *   and closes when you click away. Both open and close with no JavaScript.
+ * @markup
+ *   <button type="button" class="button" commandfor="{{id}}" command="show-modal">Other models</button>
+ *   <dialog class="popover" id="{{id}}" aria-labelledby="{{id}}-title">
+ *     <header>
+ *       <h2 id="{{id}}-title">Other models</h2>
+ *       <form method="dialog"><button class="button" data-variant="quiet">Close</button></form>
+ *     </header>
+ *     <div class="stack">
+ *       <p>Apple's on-device model is the default and needs no download.</p>
+ *     </div>
+ *   </dialog>
+ * @states
+ *   data-anchor — On a popover-attribute panel: opens beside the button that opened it, not in the middle of the page.
+ * @props
+ *   --popover-width — The panel's width. Default: 35rem, never wider than the screen less a margin.
+ * @tokens --bg --fg --shadow --backdrop --space-m --space-3xs --space-s --space-2xs --font-display --text-title --leading-display --tracking-display
+ * @do Open a dialog with commandfor and command="show-modal", and a light panel with popovertarget.
+ * @dont Close it with an ✕ icon, nest one in another, or rebuild it from divs; the native elements trap
+ *   focus and close on Esc.
+ */
+@layer components {
+  .popover {
+    inline-size: min(var(--popover-width, 35rem), 100vw - var(--space-s) * 2);
+    max-block-size: calc(100dvh - var(--space-s) * 2);
+    padding: calc(var(--space-m) - var(--space-3xs)) var(--space-m) var(--space-m);
+    border: 1px solid var(--fg);
+    background-color: var(--bg);
+    color: var(--fg);
+    box-shadow: var(--shadow);
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+
+  .popover::backdrop {
+    background-color: var(--backdrop);
+  }
+
+  .popover > header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-s);
+    margin-block-end: var(--space-2xs);
+  }
+
+  .popover > header > :is(h1, h2, h3) {
+    font-family: var(--font-display);
+    font-size: var(--text-title);
+    font-weight: 300;
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+  }
+
+  /* Beside its button where the browser can anchor it; centred, as any popover, where it cannot. */
+  @supports (position-area: block-end) {
+    .popover[popover][data-anchor] {
+      inset: auto;
+      margin: var(--space-2xs) 0;   /* cm-allow: a top-layer panel has no caller to place it */
+      position-area: block-end span-inline-end;
+      position-try-fallbacks: flip-block, flip-inline;
+    }
+  }
+}

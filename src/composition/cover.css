@@ -1,0 +1,32 @@
+/**
+ * @composition cover
+ * @purpose A full-height column: one child, marked data-principal, sits in the vertical centre, with an
+ *   optional header above and footer below.
+ * @markup
+ *   <div class="cover" style="--cover-min: 14rem" {{state}}>
+ *     <div>Header</div>
+ *     <div data-principal>The principal child, centred in the space left over.</div>
+ *     <div>Footer</div>
+ *   </div>
+ * @states
+ *   data-space="l" — The minimum space between the children. Default: m.
+ * @props
+ *   --cover-min — The minimum height. Default: 100dvh.
+ * @tokens --space-m
+ * @do Mark exactly one child data-principal.
+ * @dont Use it only to make a page fill the screen; the body is already at least that tall.
+ */
+@layer composition {
+  .cover {
+    --_space: var(--space-m);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--_space);
+    min-block-size: var(--cover-min, 100dvh);
+  }
+
+  .cover > [data-principal] {
+    margin-block: auto;
+  }
+}

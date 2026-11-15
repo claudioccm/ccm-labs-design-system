@@ -1,0 +1,47 @@
+/**
+ * @base page
+ * @purpose The page itself: ink on paper in Switzer at the body step, an inverted selection, one focus
+ *   ring, and no motion for people who asked for none.
+ */
+@layer defaults {
+  :root {
+    font-family: var(--font-text);
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+  }
+
+  /* Not on the root: rem is the root's size, and the space scale must not shrink with the tool density. */
+  body,
+  [data-density]:not(:root) {
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+  }
+
+  ::selection {
+    background-color: var(--fg);
+    color: var(--bg);
+  }
+
+  :focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-offset);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

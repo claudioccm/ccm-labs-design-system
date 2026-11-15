@@ -1,0 +1,39 @@
+/**
+ * @composition cluster
+ * @purpose Things in a row that wrap when they run out of room: buttons, a title and its actions, meta.
+ * @markup
+ *   <div class="cluster" {{state}}>
+ *     <div>One</div>
+ *     <div>Two</div>
+ *     <div>Three</div>
+ *   </div>
+ * @states
+ *   data-space="xs" — The space between children, across and down. Default: s.
+ *   data-justify="between" — First child to the start, last to the end (also: center, end).
+ *   data-align="baseline" — Align on the text baseline (also: start, end, stretch). Default: center.
+ * @tokens --space-s
+ * @do Add data-push="end" to a child to send it, and everything after it, to the far end.
+ * @dont Use it for page columns; that is sidebar, switcher or grid.
+ */
+@layer composition {
+  .cluster {
+    --_space: var(--space-s);
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--_space);
+  }
+
+  .cluster[data-justify="between"] { justify-content: space-between; }
+  .cluster[data-justify="center"] { justify-content: center; }
+  .cluster[data-justify="end"] { justify-content: flex-end; }
+
+  .cluster[data-align="start"] { align-items: flex-start; }
+  .cluster[data-align="baseline"] { align-items: baseline; }
+  .cluster[data-align="end"] { align-items: flex-end; }
+  .cluster[data-align="stretch"] { align-items: stretch; }
+
+  .cluster > [data-push="end"] { margin-inline-start: auto; }
+}

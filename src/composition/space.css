@@ -1,0 +1,34 @@
+/**
+ * @composition space
+ * @purpose The data-space attribute shared by stack, cluster, sidebar, switcher, grid, cover and reel: one
+ *   name for the space between children, taking any step or pair of the space scale.
+ * @markup
+ *   <div class="stack" data-space="l">
+ *     <div class="cluster" data-space="3xs"><div>Tight</div><div>cluster</div></div>
+ *     <div class="cluster" data-space="s-xl"><div>A pair grows</div><div>with the viewport</div></div>
+ *   </div>
+ * @do Use a pair (s-l, s-xl) where the space should grow between a phone and a desktop.
+ * @dont Write gap or margin with a raw length on a page; pick a step.
+ */
+@layer composition {
+  /* After the primitives, so an attribute wins over each primitive's own default at equal specificity. */
+  [data-space="3xs"] { --_space: var(--space-3xs); }
+  [data-space="2xs"] { --_space: var(--space-2xs); }
+  [data-space="xs"] { --_space: var(--space-xs); }
+  [data-space="s"] { --_space: var(--space-s); }
+  [data-space="m"] { --_space: var(--space-m); }
+  [data-space="l"] { --_space: var(--space-l); }
+  [data-space="xl"] { --_space: var(--space-xl); }
+  [data-space="2xl"] { --_space: var(--space-2xl); }
+  [data-space="3xl"] { --_space: var(--space-3xl); }
+  [data-space="3xs-2xs"] { --_space: var(--space-3xs-2xs); }
+  [data-space="2xs-xs"] { --_space: var(--space-2xs-xs); }
+  [data-space="xs-s"] { --_space: var(--space-xs-s); }
+  [data-space="s-m"] { --_space: var(--space-s-m); }
+  [data-space="m-l"] { --_space: var(--space-m-l); }
+  [data-space="l-xl"] { --_space: var(--space-l-xl); }
+  [data-space="xl-2xl"] { --_space: var(--space-xl-2xl); }
+  [data-space="2xl-3xl"] { --_space: var(--space-2xl-3xl); }
+  [data-space="s-l"] { --_space: var(--space-s-l); }
+  [data-space="s-xl"] { --_space: var(--space-s-xl); }
+}

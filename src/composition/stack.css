@@ -1,0 +1,30 @@
+/**
+ * @composition stack
+ * @purpose Children in a column with one space between them. The default way to space anything vertically.
+ * @markup
+ *   <div class="stack" {{state}}>
+ *     <div>One</div>
+ *     <div>Two</div>
+ *     <div>Three</div>
+ *   </div>
+ * @states
+ *   data-space="xs" — The space between children: any step or pair of the space scale. Default: s.
+ *   data-align="start" — Children keep their own width (start, center or end) instead of stretching.
+ * @tokens --space-s
+ * @do Nest stacks with different data-space values to group related things.
+ * @dont Put margins on the children; the stack owns the space between them.
+ */
+@layer composition {
+  .stack {
+    --_space: var(--space-s);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: var(--_space);
+  }
+
+  .stack[data-align="start"] { align-items: flex-start; }
+  .stack[data-align="center"] { align-items: center; }
+  .stack[data-align="end"] { align-items: flex-end; }
+}

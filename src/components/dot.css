@@ -1,0 +1,31 @@
+/**
+ * @block dot
+ * @purpose A small round status dot. Colour means state only: teal for ok or live, yellow for asking or
+ *   loading, red for trouble, muted grey for idle.
+ * @markup
+ *   <span class="cluster" data-space="2xs"><span class="dot" {{state}}></span> Speech model</span>
+ * @states
+ *   data-state="ok" — Ok, live, listening.
+ *   data-state="ask" — Asking, loading, paused, needs attention.
+ *   data-state="trouble" — An error or a failed run.
+ * @props
+ *   --dot-size — The dot's diameter. Default: 0.5em.
+ * @tokens --muted --ok --ask --trouble --duration --ease
+ * @do Put the state in words next to the dot, or give a lone dot role="img" and an aria-label.
+ * @dont Use these colours for decoration or branding.
+ */
+@layer components {
+  .dot {
+    display: inline-block;
+    flex-shrink: 0;
+    inline-size: var(--dot-size, 0.5em);
+    block-size: var(--dot-size, 0.5em);
+    border-radius: 50%;
+    background-color: var(--muted);
+    transition: background-color var(--duration) var(--ease);
+  }
+
+  .dot[data-state="ok"] { background-color: var(--ok); }
+  .dot[data-state="ask"] { background-color: var(--ask); }
+  .dot[data-state="trouble"] { background-color: var(--trouble); }
+}

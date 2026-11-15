@@ -1,0 +1,33 @@
+/**
+ * @composition imposter
+ * @purpose Centres one element over its positioned parent, or over the viewport with data-fixed.
+ * @markup
+ *   <div style="position: relative; min-block-size: 9rem">
+ *     <p>Content underneath.</p>
+ *     <div class="imposter" {{state}}>Centred over it</div>
+ *   </div>
+ * @states
+ *   data-contain — Never larger than the parent, less a margin; scrolls inside if it has to.
+ *   data-fixed — Centred over the viewport instead of the parent.
+ * @tokens --space-m
+ * @do Give the parent position: relative.
+ * @dont Build a dialog with it; use the popover block on a dialog element, which traps focus and closes on Esc.
+ */
+@layer composition {
+  .imposter {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    translate: -50% -50%;
+  }
+
+  .imposter[data-fixed] {
+    position: fixed;
+  }
+
+  .imposter[data-contain] {
+    max-inline-size: calc(100% - var(--space-m) * 2);
+    max-block-size: calc(100% - var(--space-m) * 2);
+    overflow: auto;
+  }
+}

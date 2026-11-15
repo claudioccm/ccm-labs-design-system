@@ -1,0 +1,27 @@
+/**
+ * @composition frame
+ * @purpose Crops media to an aspect ratio, so a row of images or videos lines up whatever their sizes.
+ * @markup
+ *   <div class="frame" style="max-inline-size: 20rem" {{state}}>
+ *     <div>Media is cropped to 16:9</div>
+ *   </div>
+ * @props
+ *   --frame-ratio — The aspect ratio. Default: 16 / 9.
+ * @do Put one img, video, canvas or iframe inside; it is scaled to cover the frame.
+ * @dont Set a fixed height on the frame; the ratio gives it one.
+ */
+@layer composition {
+  .frame {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    aspect-ratio: var(--frame-ratio, 16 / 9);
+    overflow: hidden;
+  }
+
+  .frame > :is(img, video, canvas, iframe) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+}

@@ -1,0 +1,42 @@
+/* The house design system. One fixed layer order (PRINCIPLES.md §2); a project's own styles go in `overrides`
+   or stay unlayered, and so always win. Each file below wraps its rules in its own layer. */
+@layer reset, defaults, tokens, themes, composition, components, utils, overrides;
+
+@import "reset/reset.css";
+
+@import "defaults/root.css";
+@import "defaults/typography.css";
+@import "defaults/controls.css";
+@import "defaults/tables.css";
+
+@import "tokens/color.css";
+@import "tokens/type.css";
+@import "tokens/space.css";
+@import "tokens/font.css";
+@import "tokens/misc.css";
+
+@import "themes/theme.css";
+
+@import "composition/stack.css";
+@import "composition/cluster.css";
+@import "composition/center.css";
+@import "composition/sidebar.css";
+@import "composition/switcher.css";
+@import "composition/grid.css";
+@import "composition/cover.css";
+@import "composition/frame.css";
+@import "composition/reel.css";
+@import "composition/imposter.css";
+@import "composition/space.css";
+
+@import "components/label.css";
+@import "components/display.css";
+@import "components/button.css";
+@import "components/field.css";
+@import "components/dot.css";
+@import "components/toolbar.css";
+@import "components/nav.css";
+@import "components/popover.css";
+@import "components/theme-toggle.css";
+
+@import "utils/utils.css";

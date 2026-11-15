@@ -1,0 +1,118 @@
+/* The specimen page's own styles, on top of the system. A project's styles go in the overrides layer,
+   exactly as here. Copied to specimen/specimen.css by tools/build.js. */
+@layer overrides {
+  body {
+    padding-block: var(--space-l) var(--space-3xl);
+  }
+
+  .specimen-quiet {
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .specimen-quiet:hover {
+    color: var(--fg);
+  }
+
+  .specimen-toc {
+    position: sticky;
+    inset-block-start: var(--space-m);
+    align-self: flex-start;
+    max-block-size: calc(100dvh - var(--space-m) * 2);
+    overflow-y: auto;
+  }
+
+  .specimen-entry {
+    scroll-margin-block-start: var(--space-m);
+  }
+
+  .specimen-entry + .specimen-entry {
+    padding-block-start: var(--space-xl);
+    border-block-start: 1px solid var(--rule);
+  }
+
+  .specimen-example {
+    padding: var(--space-m);
+    border: 1px solid var(--rule);
+    transform: translate(0);   /* keeps a position: fixed example inside its frame */
+  }
+
+  /* Composition examples are made of bare divs: outline the children so the layout shows. */
+  .specimen-example[data-kind="composition"] :is(.stack, .cluster, .center, .sidebar, .switcher, .grid, .cover, .reel) > *,
+  .specimen-example[data-kind="composition"] :is(.frame, .imposter) {
+    padding: var(--space-2xs) var(--space-xs);
+    background-color: var(--hover);
+  }
+
+  .specimen-example[data-kind="composition"] :is(.stack, .cluster) > :is(.stack, .cluster) {
+    padding: 0;
+    background-color: transparent;
+  }
+
+  .specimen-tokens {
+    display: grid;
+    gap: var(--space-2xs) var(--space-m);
+  }
+
+  .specimen-tokens:is([data-render="swatch"], [data-render="palette"]) {
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  }
+
+  .specimen-swatch {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+  }
+
+  .specimen-swatch > span {
+    flex-shrink: 0;
+    inline-size: var(--space-m);
+    block-size: var(--space-m);
+    border: 1px solid var(--rule);
+  }
+
+  .specimen-type,
+  .specimen-space {
+    display: grid;
+    grid-template-columns: 9rem 1fr;
+    align-items: baseline;
+    gap: var(--space-s);
+  }
+
+  .specimen-type > span {
+    overflow: hidden;
+    line-height: var(--leading-tight);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .specimen-space {
+    align-items: center;
+  }
+
+  .specimen-space > span {
+    block-size: var(--space-xs);
+    background-color: var(--fg);
+  }
+
+  .specimen-tokens code,
+  .specimen-entry > header code {
+    color: var(--muted);
+  }
+
+  .specimen-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+    gap: var(--space-m);
+  }
+
+  .specimen-meta > div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xs);
+  }
+
+  .specimen-entry pre {
+    margin-block-start: var(--space-2xs);
+  }
+}

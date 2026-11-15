@@ -1,0 +1,37 @@
+/**
+ * @composition reel
+ * @purpose A row that scrolls sideways instead of wrapping, for a strip of items that should stay on one line.
+ * @markup
+ *   <div class="reel" style="--reel-item: 12rem" tabindex="0" role="group" aria-label="Example reel" {{state}}>
+ *     <div>One</div>
+ *     <div>Two</div>
+ *     <div>Three</div>
+ *     <div>Four</div>
+ *     <div>Five</div>
+ *     <div>Six</div>
+ *   </div>
+ * @states
+ *   data-space="l" — The space between items. Default: s.
+ * @props
+ *   --reel-item — Each item's width. Default: auto (its own width).
+ * @tokens --space-s --muted
+ * @do Give it tabindex="0", a role and a label, so it can be scrolled from the keyboard.
+ * @dont Hide the scrollbar; it is the only sign that there is more.
+ */
+@layer composition {
+  .reel {
+    --_space: var(--space-s);
+
+    display: flex;
+    gap: var(--_space);
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    scrollbar-color: var(--muted) transparent;
+    scrollbar-width: thin;
+  }
+
+  .reel > * {
+    flex: 0 0 var(--reel-item, auto);
+  }
+}

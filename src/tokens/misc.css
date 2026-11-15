@@ -1,0 +1,18 @@
+/**
+ * @token controls-and-motion
+ * @purpose The focus ring, control padding and the one quiet transition. Control padding is in em, so a
+ *   control tightens with the tool density's smaller type.
+ * @render none
+ */
+@layer tokens {
+  :root {
+    --focus-ring: 2px solid var(--fg);
+    --focus-offset: 2px;
+
+    --control-pad-block: 0.375em;
+    --control-pad-inline: 0.75em;
+
+    --duration: 140ms;
+    --ease: ease-out;
+  }
+}
