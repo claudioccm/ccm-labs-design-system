@@ -21,6 +21,8 @@
     --soft: light-dark(var(--color-ink-soft), var(--color-snow-soft));
     --muted: light-dark(var(--color-ink-muted), var(--color-snow-muted));
     --rule: light-dark(var(--color-ink-rule), var(--color-night-rule));
+    /* The dots of a dotted line: a dot covers less than a solid rule, so it is a darker grey. */
+    --rule-dot: light-dark(var(--color-ink-speck), var(--color-night-speck));
     --hover: light-dark(var(--color-ink-hover), var(--color-night-hover));
 
     /* Colour means state only: ok or live, asking or loading, trouble. The -ink ones are for text. */

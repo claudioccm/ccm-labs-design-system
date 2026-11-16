@@ -1,4 +1,4 @@
-/*! ccm-labs-design-system v0.2.0 — github.com/claudioccm/ccm-labs-design-system — built from src/, do not edit */
+/*! ccm-labs-design-system v0.3.0 — github.com/claudioccm/ccm-labs-design-system — built from src/, do not edit */
 @layer reset, defaults, tokens, themes, composition, components, utils, overrides;
 
 /**
@@ -195,11 +195,12 @@
     padding-inline-start: 1.25em;
   }
 
+  /* A grey line between things is dotted (tokens/misc.css). */
   hr {
-    block-size: 0;
+    block-size: 1px;
     margin: 0;
     border: 0;
-    border-block-start: 1px solid var(--rule);
+    background: var(--dots-above);
   }
 
   blockquote {
@@ -317,7 +318,7 @@
 
 /**
  * @base table
- * @purpose Tables with no class: column heads as small uppercase labels, one rule under each row,
+ * @purpose Tables with no class: column heads as small uppercase labels, one dotted line under each row,
  *   tabular numerals so columns of numbers line up.
  * @markup
  *   <table>
@@ -335,9 +336,13 @@
     font-variant-numeric: tabular-nums;
   }
 
+  /* On the row, not its cells, so the dots run evenly across the columns. */
+  tr {
+    background: var(--dots-below);
+  }
+
   th, td {
     padding: var(--space-2xs) var(--space-xs);
-    border-block-end: 1px solid var(--rule);
     text-align: start;
     vertical-align: baseline;
   }
@@ -373,11 +378,13 @@
     --color-ink-soft: #444;
     --color-ink-muted: #6b6b6b;
     --color-ink-rule: #e0e0e0;
+    --color-ink-speck: #c2c2c2;
     --color-ink-hover: #f6f6f6;
 
     /* The dark twin: a very dark blue, with text as white at 80, 65 and 50% so it takes a little of the blue. */
     --color-night: #070a14;
     --color-night-rule: #1b2131;
+    --color-night-speck: #4a536c;
     --color-night-hover: #0e1322;
     --color-snow: rgb(255 255 255 / 0.8);
     --color-snow-soft: rgb(255 255 255 / 0.65);
@@ -524,8 +531,14 @@
 
 /**
  * @token controls-and-motion
- * @purpose The focus ring, control padding and the one quiet transition. Control padding is in em, so a
- *   control tightens with the tool density's smaller type.
+ * @purpose The focus ring, control padding, the one quiet transition and the dotted line. Control padding
+ *   is in em, so a control tightens with the tool density's smaller type. A grey line between things is
+ *   dotted: set one with background: var(--dots-below) (or -above, -start, -end), never with a border.
+ * @markup
+ *   <div class="stack" data-space="2xs">
+ *     <p style="padding-block-end: var(--space-2xs); background: var(--dots-below)">A dotted line below: background: var(--dots-below).</p>
+ *     <p>Round dots, one every 4px, so they read as dots at any zoom.</p>
+ *   </div>
  * @render none
  */
 @layer tokens {
@@ -538,6 +551,15 @@
 
     --duration: 140ms;
     --ease: ease-out;
+
+    /* The dotted line: every grey line between things (rows, sections, a toolbar and its content). Ink rules
+       and the outlines of boxes and controls stay solid. --dots is the dot itself; the four below are whole
+       background values, one for each side of an element. */
+    --dots: radial-gradient(circle, var(--rule-dot) 0.75px, transparent 1.1px);
+    --dots-above: var(--dots) left top / 4px 1px repeat-x;
+    --dots-below: var(--dots) left bottom / 4px 1px repeat-x;
+    --dots-start: var(--dots) left top / 1px 4px repeat-y;
+    --dots-end: var(--dots) right top / 1px 4px repeat-y;
   }
 }
 
@@ -564,6 +586,8 @@
     --soft: light-dark(var(--color-ink-soft), var(--color-snow-soft));
     --muted: light-dark(var(--color-ink-muted), var(--color-snow-muted));
     --rule: light-dark(var(--color-ink-rule), var(--color-night-rule));
+    /* The dots of a dotted line: a dot covers less than a solid rule, so it is a darker grey. */
+    --rule-dot: light-dark(var(--color-ink-speck), var(--color-night-speck));
     --hover: light-dark(var(--color-ink-hover), var(--color-night-hover));
 
     /* Colour means state only: ok or live, asking or loading, trouble. The -ink ones are for text. */
@@ -959,12 +983,12 @@
 /**
  * @block label
  * @purpose The small uppercase label: field names, column heads, section heads. With data-rule it is a
- *   section head, a label over a 1px rule.
+ *   section head, a label over a dotted line.
  * @markup
  *   <h2 class="label" {{state}}>Recent runs</h2>
  * @states
- *   data-rule — A section head: the label sits over a rule that spans its container.
- * @tokens --text-label --tracking-label --muted --space-2xs --rule
+ *   data-rule — A section head: the label sits over a dotted line that spans its container.
+ * @tokens --text-label --tracking-label --muted --space-2xs --dots-below
  * @do Put it on the element that carries the meaning: a heading for a section head, a span inside a field.
  * @dont Use it for sentences or body text; uppercase is for a few words.
  */
@@ -979,7 +1003,7 @@
 
   .label[data-rule] {
     padding-block-end: var(--space-2xs);
-    border-block-end: 1px solid var(--rule);
+    background: var(--dots-below);
   }
 }
 
@@ -1193,7 +1217,7 @@
 
 /**
  * @block toolbar
- * @purpose A row of controls over a rule, between a view's title and its content. It wraps on a narrow screen.
+ * @purpose A row of controls over a dotted line, between a view's title and its content. It wraps on a narrow screen.
  * @markup
  *   <div class="toolbar" role="group" aria-label="Script controls">
  *     <label class="field" data-layout="inline">
@@ -1203,7 +1227,7 @@
  *     <button type="button" class="button" data-variant="quiet">Other models</button>
  *     <button type="button" class="button" data-variant="primary" data-push="end">Start</button>
  *   </div>
- * @tokens --space-xs --space-m --space-s --rule
+ * @tokens --space-xs --space-m --space-s --dots-below
  * @do Add data-push="end" to the primary action to send it to the far end.
  * @dont Give it role="toolbar"; that role promises arrow-key navigation this block does not add.
  */
@@ -1214,7 +1238,7 @@
     align-items: center;
     gap: var(--space-xs) var(--space-m);
     padding-block-end: var(--space-s);
-    border-block-end: 1px solid var(--rule);
+    background: var(--dots-below);
   }
 
   .toolbar > [data-push="end"] {
@@ -1512,7 +1536,9 @@
     background-color: transparent;
   }
 
-  .chip:is([aria-pressed="true"], [aria-current="page"]) {
+  /* Filled, and it stays filled under the pointer. */
+  .chip:is([aria-pressed="true"], [aria-current="page"]),
+  :is(a, button).chip:is([aria-pressed="true"], [aria-current="page"]):hover {
     border-color: var(--fg);
     background-color: var(--fg);
     color: var(--bg);

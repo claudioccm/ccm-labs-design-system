@@ -1,7 +1,13 @@
 /**
  * @token controls-and-motion
- * @purpose The focus ring, control padding and the one quiet transition. Control padding is in em, so a
- *   control tightens with the tool density's smaller type.
+ * @purpose The focus ring, control padding, the one quiet transition and the dotted line. Control padding
+ *   is in em, so a control tightens with the tool density's smaller type. A grey line between things is
+ *   dotted: set one with background: var(--dots-below) (or -above, -start, -end), never with a border.
+ * @markup
+ *   <div class="stack" data-space="2xs">
+ *     <p style="padding-block-end: var(--space-2xs); background: var(--dots-below)">A dotted line below: background: var(--dots-below).</p>
+ *     <p>Round dots, one every 4px, so they read as dots at any zoom.</p>
+ *   </div>
  * @render none
  */
 @layer tokens {
@@ -14,5 +20,14 @@
 
     --duration: 140ms;
     --ease: ease-out;
+
+    /* The dotted line: every grey line between things (rows, sections, a toolbar and its content). Ink rules
+       and the outlines of boxes and controls stay solid. --dots is the dot itself; the four below are whole
+       background values, one for each side of an element. */
+    --dots: radial-gradient(circle, var(--rule-dot) 0.75px, transparent 1.1px);
+    --dots-above: var(--dots) left top / 4px 1px repeat-x;
+    --dots-below: var(--dots) left bottom / 4px 1px repeat-x;
+    --dots-start: var(--dots) left top / 1px 4px repeat-y;
+    --dots-end: var(--dots) right top / 1px 4px repeat-y;
   }
 }

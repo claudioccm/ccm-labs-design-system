@@ -114,7 +114,7 @@ for (const f of css) {
   }
   each(/border(?:-[a-z-]+)?-radius:\s*([^;]+);/g, m =>
     (/^0\b/.test(m[1].trim()) || ROUND.has(f.rel) ? '' : 'square corners: only the status dot and the theme toggle are round'));
-  each(/\b(?:dashed|dotted)\b/g, () => 'rules are solid 1px lines; no dashed or dotted ones');
+  each(/\b(?:dashed|dotted)\b/g, () => 'no dashed or dotted borders: ink rules and outlines are solid, and a grey line is background: var(--dots-below)');
   if (f.dir === 'composition' || f.dir === 'components') {
     each(/@media[^{]*\b(?:width|height)\b/g, () => 'no breakpoints inside a block or a primitive; it adapts to its container (PRINCIPLES.md §5)');
   }

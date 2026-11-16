@@ -1,7 +1,7 @@
 # ccm-labs-design-system
 
 The house design system for Claudio's pet projects: ink on paper and its dark twin, Switzer and Montagu Slab,
-square corners, colour only for state. Plain CSS in cascade layers (CUBE CSS, Utopia tokens, Every Layout
+square corners, dotted grey lines, colour only for state. Plain CSS in cascade layers (CUBE CSS, Utopia tokens, Every Layout
 composition) plus light-DOM custom elements. No framework, no build step for the projects that use it.
 
 - **Why it is built this way:** [PRINCIPLES.md](PRINCIPLES.md)
@@ -27,11 +27,11 @@ npm run verify   # build, check and browser tests
 `dist/`, `specimen/`, `llms.txt`, `llms-full.txt` and `custom-elements.json` are generated and committed, so a
 project can load a release straight from GitHub or jsDelivr. See [AGENTS.md](AGENTS.md) before changing anything.
 
-## What is in v0.2.0
+## What is in v0.3.0
 
 | Layer | Contents |
 | --- | --- |
-| Tokens | Palette, two Utopia type scales (read and tool), one space scale, typefaces, focus and motion |
+| Tokens | Palette, two Utopia type scales (read and tool), one space scale, typefaces, focus and motion, the dotted line |
 | Theme | Colour roles for light and dark, following the system or pinned per surface |
 | Base | Reset, page, typography, form controls, tables |
 | Composition | stack, cluster, center, sidebar, switcher, grid, cover, frame, reel, imposter |

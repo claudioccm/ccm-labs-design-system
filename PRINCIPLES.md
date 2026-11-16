@@ -1,6 +1,7 @@
 # CM Design System: principles
 
-Started 2026-11-15; v0.1.0 was built on it and v0.2.0 followed the first three adoptions. Each principle is marked **Agreed**, **Proposed** or **Open**.
+Started 2026-11-15; v0.1.0 was built on it, v0.2.0 followed the first three adoptions and v0.3.0 the
+decisions they raised. Each principle is marked **Agreed**, **Proposed** or **Open**.
 Agreed items change only with a reason written down here. How to apply them day to day is in `AGENTS.md`.
 
 ## What this is
@@ -101,6 +102,9 @@ what blocks read.
 
 ### 7. House look only — Agreed
 
+Ink on paper and its dark twin; Switzer for text and Montagu Slab Light for every interface's titles; square
+corners; solid 1px ink rules and outlines, and dotted grey lines between things; colour only for state.
+
 This system is the house look, not a kit for all work. The `themes` layer holds the light look and its dark
 twin and nothing else. There is no multi-brand theming.
 
@@ -176,8 +180,8 @@ Start with GitHub alone; add npm only if it starts to hurt:
 
 | Consumer | How it gets the system |
 | --- | --- |
-| Nuxt, Astro, Vite projects | Git dependency on a tag: `github:claudioccm/ccm-labs-design-system#v0.2.0`, imported as the first line of the project's own stylesheet |
-| Plain HTML pages | jsDelivr's GitHub route: `https://cdn.jsdelivr.net/gh/claudioccm/ccm-labs-design-system@0.2/dist/cm.css` |
+| Nuxt, Astro, Vite projects | Git dependency on a tag: `github:claudioccm/ccm-labs-design-system#v0.3.0`, imported as the first line of the project's own stylesheet |
+| Plain HTML pages | jsDelivr's GitHub route: `https://cdn.jsdelivr.net/gh/claudioccm/ccm-labs-design-system@0.3/dist/cm.css` |
 | Apps that must work offline, or that allow no outside script | A pinned copy of `dist/` kept in the project and refreshed by a script, never edited |
 
 - The built files (`dist/`, the specimen, `llms.txt`) are committed with the source, so every tag works on
@@ -252,6 +256,18 @@ A shortlist to borrow behaviour and patterns from. Each needs a "what we take" b
   dotted row rules, inverting buttons, Switzer popover title and pale asking dot.
 - 2026-11-15 — The system's class names stay plain words, so an adopter renames its own on a collision
   (_refs's `sidebar` became `app-sidebar`).
+- 2026-11-15 — Claudio, on the differences the migrations kept: normalise them. The adopters take the
+  system's look, and the system takes two things from them. This replaces the entry above that let an adopter
+  keep its own look: an `overrides` layer is for what a project has that the system does not, not for a
+  second opinion on the look. (v0.3.0)
+- 2026-11-15 — **Grey lines are dotted.** Every grey line between things (rows of a list or a table, an `hr`,
+  a toolbar and its content, a section head) is a row of round dots, one every 4px, as the command center
+  drew the lines between its Brief rows. Ink rules (a titlebar, a blockquote) and the outlines of boxes and
+  controls stay solid 1px. It is drawn with a background, not `border-style: dotted`, whose dots are square
+  and change with zoom: `background: var(--dots-below)` (or `-above`, `-start`, `-end`). The dots are
+  `--rule-dot`, a darker grey than `--rule`, because a dot covers less than a line.
+- 2026-11-15 — **Montagu Slab in every interface.** A dense tool's titles are the display face too: the page
+  or view name, the app name, a dialog's or panel's title. No project sets its titles in Switzer.
 
 ## Parked
 

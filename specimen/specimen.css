@@ -28,7 +28,7 @@
 
   .specimen-entry + .specimen-entry {
     padding-block-start: var(--space-xl);
-    border-block-start: 1px solid var(--rule);
+    background: var(--dots-above);
   }
 
   .specimen-example {

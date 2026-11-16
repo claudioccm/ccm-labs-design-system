@@ -1,6 +1,6 @@
 {
   "name": "ccm-labs-design-system",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "The house design system for Claudio's pet projects: CUBE CSS, Utopia tokens, Every Layout composition and light-DOM custom elements.",
   "type": "module",
   "private": true,

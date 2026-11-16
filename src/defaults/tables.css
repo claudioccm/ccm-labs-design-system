@@ -1,6 +1,6 @@
 /**
  * @base table
- * @purpose Tables with no class: column heads as small uppercase labels, one rule under each row,
+ * @purpose Tables with no class: column heads as small uppercase labels, one dotted line under each row,
  *   tabular numerals so columns of numbers line up.
  * @markup
  *   <table>
@@ -18,9 +18,13 @@
     font-variant-numeric: tabular-nums;
   }
 
+  /* On the row, not its cells, so the dots run evenly across the columns. */
+  tr {
+    background: var(--dots-below);
+  }
+
   th, td {
     padding: var(--space-2xs) var(--space-xs);
-    border-block-end: 1px solid var(--rule);
     text-align: start;
     vertical-align: baseline;
   }

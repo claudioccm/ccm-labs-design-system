@@ -154,7 +154,30 @@ test('a pressed button and a pressed chip are filled ink', async () => {
   assert.deepEqual(await paint('[data-specimen="block-button"] .button[aria-pressed="true"]'), { filled: true, text: true });
   assert.deepEqual(await paint('[data-specimen="block-chip"] .chip[aria-pressed="true"]'), { filled: true, text: true });
   assert.deepEqual(await paint('[data-specimen="block-chip"] button.chip:not([aria-pressed])'), { filled: false, text: false });
+  for (const sel of ['[data-specimen="block-chip"] .chip[aria-pressed="true"]', '[data-specimen="block-button"] .button[aria-pressed="true"]']) {
+    await page.hover(sel);
+    await page.waitForTimeout(250);   // past the colour transition
+    assert.deepEqual(await paint(sel), { filled: true, text: true }, sel + ' stays filled under the pointer');
+  }
   await context.close();
+});
+
+test('a grey line between things is dotted, in both looks; an ink rule stays solid', async () => {
+  for (const colorScheme of ['light', 'dark']) {
+    const { page, context } = await open('/specimen/', { colorScheme });
+    const line = sel => page.$eval(sel, el => {
+      const s = getComputedStyle(el);
+      return { dots: s.backgroundImage.startsWith('radial-gradient('), size: s.backgroundSize, border: s.borderBottomWidth + ' ' + s.borderBottomStyle };
+    });
+    const dotted = { dots: true, size: '4px 1px', border: '0px none' };
+    assert.deepEqual(await line('[data-specimen="block-toolbar"] .toolbar'), dotted, colorScheme + ' toolbar');
+    assert.deepEqual(await line('[data-specimen="base-typography"] hr'), dotted, colorScheme + ' hr');
+    assert.deepEqual(await line('[data-specimen="base-table"] tbody tr'), dotted, colorScheme + ' table row');
+    assert.deepEqual(await line('[data-specimen="block-titlebar"] .titlebar'), { dots: false, size: 'auto', border: '1px solid' }, colorScheme + ' titlebar');
+    const dot = await page.$eval('[data-specimen="block-toolbar"] .toolbar', el => getComputedStyle(el).backgroundImage.match(/rgba?\([^)]+\)/)[0]);
+    assert.equal(dot, colorScheme === 'dark' ? 'rgb(74, 83, 108)' : 'rgb(194, 194, 194)');
+    await context.close();
+  }
 });
 
 test('only a modal dialog dims the page; a popover-attribute panel leaves it as it is', async () => {

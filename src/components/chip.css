@@ -40,7 +40,9 @@
     background-color: transparent;
   }
 
-  .chip:is([aria-pressed="true"], [aria-current="page"]) {
+  /* Filled, and it stays filled under the pointer. */
+  .chip:is([aria-pressed="true"], [aria-current="page"]),
+  :is(a, button).chip:is([aria-pressed="true"], [aria-current="page"]):hover {
     border-color: var(--fg);
     background-color: var(--fg);
     color: var(--bg);

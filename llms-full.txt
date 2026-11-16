@@ -1,6 +1,6 @@
 # ccm-labs-design-system
 
-> The house design system for Claudio's pet projects: CUBE CSS, Utopia tokens, Every Layout composition and light-DOM custom elements. Version 0.2.0.
+> The house design system for Claudio's pet projects: CUBE CSS, Utopia tokens, Every Layout composition and light-DOM custom elements. Version 0.3.0.
 
 The contract is HTML: class names, data attributes and the tokens a block reads. Read AGENTS.md before
 writing markup; it holds the rules and the head snippet. Each entry below is documented in a header comment
@@ -41,9 +41,16 @@ Source: src/tokens/font.css
 
 ### controls-and-motion
 
-The focus ring, control padding and the one quiet transition. Control padding is in em, so a control tightens with the tool density's smaller type.
+The focus ring, control padding, the one quiet transition and the dotted line. Control padding is in em, so a control tightens with the tool density's smaller type. A grey line between things is dotted: set one with background: var(--dots-below) (or -above, -start, -end), never with a border.
 
 Source: src/tokens/misc.css
+
+```html
+<div class="stack" data-space="2xs">
+  <p style="padding-block-end: var(--space-2xs); background: var(--dots-below)">A dotted line below: background: var(--dots-below).</p>
+  <p>Round dots, one every 4px, so they read as dots at any zoom.</p>
+</div>
+```
 
 ### theme
 
@@ -113,7 +120,7 @@ Source: src/defaults/controls.css
 
 ### table
 
-Tables with no class: column heads as small uppercase labels, one rule under each row, tabular numerals so columns of numbers line up.
+Tables with no class: column heads as small uppercase labels, one dotted line under each row, tabular numerals so columns of numbers line up.
 
 Source: src/defaults/tables.css
 
@@ -400,7 +407,7 @@ Don't: Write gap or margin with a raw length on a page; pick a step.
 
 ### label
 
-The small uppercase label: field names, column heads, section heads. With data-rule it is a section head, a label over a 1px rule.
+The small uppercase label: field names, column heads, section heads. With data-rule it is a section head, a label over a dotted line.
 
 Source: src/components/label.css
 
@@ -409,9 +416,9 @@ Source: src/components/label.css
 ```
 
 States:
-- `data-rule`: A section head: the label sits over a rule that spans its container.
+- `data-rule`: A section head: the label sits over a dotted line that spans its container.
 
-Tokens: `--text-label` `--tracking-label` `--muted` `--space-2xs` `--rule`
+Tokens: `--text-label` `--tracking-label` `--muted` `--space-2xs` `--dots-below`
 
 Do: Put it on the element that carries the meaning: a heading for a section head, a span inside a field.
 
@@ -522,7 +529,7 @@ Don't: Use these colours for decoration or branding.
 
 ### toolbar
 
-A row of controls over a rule, between a view's title and its content. It wraps on a narrow screen.
+A row of controls over a dotted line, between a view's title and its content. It wraps on a narrow screen.
 
 Source: src/components/toolbar.css
 
@@ -537,7 +544,7 @@ Source: src/components/toolbar.css
 </div>
 ```
 
-Tokens: `--space-xs` `--space-m` `--space-s` `--rule`
+Tokens: `--space-xs` `--space-m` `--space-s` `--dots-below`
 
 Do: Add data-push="end" to the primary action to send it to the far end.
 

@@ -21,7 +21,7 @@
 <div class="center stack" data-gutter data-space="xl" style="--center-max: 76rem">
   <header class="specimen-head cluster" data-justify="between" data-align="start">
     <div class="stack" data-space="3xs">
-      <p class="label">ccm-labs-design-system · v0.2.0</p>
+      <p class="label">ccm-labs-design-system · v0.3.0</p>
       <h1 class="display">House design system</h1>
     </div>
     <div class="cluster" data-space="m">
@@ -125,9 +125,11 @@
 <div class="specimen-swatch"><span style="background-color: #444"></span><code>--color-ink-soft</code></div>
 <div class="specimen-swatch"><span style="background-color: #6b6b6b"></span><code>--color-ink-muted</code></div>
 <div class="specimen-swatch"><span style="background-color: #e0e0e0"></span><code>--color-ink-rule</code></div>
+<div class="specimen-swatch"><span style="background-color: #c2c2c2"></span><code>--color-ink-speck</code></div>
 <div class="specimen-swatch"><span style="background-color: #f6f6f6"></span><code>--color-ink-hover</code></div>
 <div class="specimen-swatch"><span style="background-color: #070a14"></span><code>--color-night</code></div>
 <div class="specimen-swatch"><span style="background-color: #1b2131"></span><code>--color-night-rule</code></div>
+<div class="specimen-swatch"><span style="background-color: #4a536c"></span><code>--color-night-speck</code></div>
 <div class="specimen-swatch"><span style="background-color: #0e1322"></span><code>--color-night-hover</code></div>
 <div class="specimen-swatch"><span style="background-color: rgb(255 255 255 / 0.8)"></span><code>--color-snow</code></div>
 <div class="specimen-swatch"><span style="background-color: rgb(255 255 255 / 0.65)"></span><code>--color-snow-soft</code></div>
@@ -226,10 +228,21 @@
 <article class="specimen-entry stack" id="token-controls-and-motion">
 <header class="stack" data-space="3xs">
   <h3>controls-and-motion</h3>
-  <p class="tone-soft measure">The focus ring, control padding and the one quiet transition. Control padding is in em, so a control tightens with the tool density's smaller type.</p>
+  <p class="tone-soft measure">The focus ring, control padding, the one quiet transition and the dotted line. Control padding is in em, so a control tightens with the tool density's smaller type. A grey line between things is dotted: set one with background: var(--dots-below) (or -above, -start, -end), never with a border.</p>
   <p class="tone-muted"><code>src/tokens/misc.css</code></p>
 </header>
 
+<div class="specimen-example" data-specimen="token-controls-and-motion" data-kind="token">
+<div class="stack" data-space="2xs">
+  <p style="padding-block-end: var(--space-2xs); background: var(--dots-below)">A dotted line below: background: var(--dots-below).</p>
+  <p>Round dots, one every 4px, so they read as dots at any zoom.</p>
+</div>
+</div>
+<details><summary class="label">Markup</summary>
+<pre><code>&lt;div class=&quot;stack&quot; data-space=&quot;2xs&quot;&gt;
+  &lt;p style=&quot;padding-block-end: var(--space-2xs); background: var(--dots-below)&quot;&gt;A dotted line below: background: var(--dots-below).&lt;/p&gt;
+  &lt;p&gt;Round dots, one every 4px, so they read as dots at any zoom.&lt;/p&gt;
+&lt;/div&gt;</code></pre></details>
 </article>
 <article class="specimen-entry stack" id="token-theme">
 <header class="stack" data-space="3xs">
@@ -243,6 +256,7 @@
 <div class="specimen-swatch"><span style="background-color: var(--soft)"></span><code>--soft</code></div>
 <div class="specimen-swatch"><span style="background-color: var(--muted)"></span><code>--muted</code></div>
 <div class="specimen-swatch"><span style="background-color: var(--rule)"></span><code>--rule</code></div>
+<div class="specimen-swatch"><span style="background-color: var(--rule-dot)"></span><code>--rule-dot</code></div>
 <div class="specimen-swatch"><span style="background-color: var(--hover)"></span><code>--hover</code></div>
 <div class="specimen-swatch"><span style="background-color: var(--ok)"></span><code>--ok</code></div>
 <div class="specimen-swatch"><span style="background-color: var(--ok-ink)"></span><code>--ok-ink</code></div>
@@ -345,7 +359,7 @@
 <article class="specimen-entry stack" id="base-table">
 <header class="stack" data-space="3xs">
   <h3>table</h3>
-  <p class="tone-soft measure">Tables with no class: column heads as small uppercase labels, one rule under each row, tabular numerals so columns of numbers line up.</p>
+  <p class="tone-soft measure">Tables with no class: column heads as small uppercase labels, one dotted line under each row, tabular numerals so columns of numbers line up.</p>
   <p class="tone-muted"><code>src/defaults/tables.css</code></p>
 </header>
 <div class="specimen-example" data-specimen="base-table" data-kind="base">
@@ -787,7 +801,7 @@
 <article class="specimen-entry stack" id="block-label">
 <header class="stack" data-space="3xs">
   <h3>label</h3>
-  <p class="tone-soft measure">The small uppercase label: field names, column heads, section heads. With data-rule it is a section head, a label over a 1px rule.</p>
+  <p class="tone-soft measure">The small uppercase label: field names, column heads, section heads. With data-rule it is a section head, a label over a dotted line.</p>
   <p class="tone-muted"><code>src/components/label.css</code></p>
 </header>
 <div class="specimen-example" data-specimen="block-label" data-kind="block">
@@ -797,12 +811,12 @@
 <div class="specimen-example" data-specimen="block-label" data-kind="block">
 <h2 class="label" data-rule>Recent runs</h2>
 </div>
-<figcaption class="tone-muted"><code>data-rule</code> A section head: the label sits over a rule that spans its container.</figcaption>
+<figcaption class="tone-muted"><code>data-rule</code> A section head: the label sits over a dotted line that spans its container.</figcaption>
 </figure></div>
 <details><summary class="label">Markup</summary>
 <pre><code>&lt;h2 class=&quot;label&quot;&gt;Recent runs&lt;/h2&gt;</code></pre></details>
 <dl class="specimen-meta">
-<div><dt class="label">Tokens</dt><dd><code>--text-label</code> <code>--tracking-label</code> <code>--muted</code> <code>--space-2xs</code> <code>--rule</code></dd></div>
+<div><dt class="label">Tokens</dt><dd><code>--text-label</code> <code>--tracking-label</code> <code>--muted</code> <code>--space-2xs</code> <code>--dots-below</code></dd></div>
 <div><dt class="label">Do</dt><dd>Put it on the element that carries the meaning: a heading for a section head, a span inside a field.</dd></div>
 <div><dt class="label">Don’t</dt><dd>Use it for sentences or body text; uppercase is for a few words.</dd></div>
 </dl>
@@ -959,7 +973,7 @@
 <article class="specimen-entry stack" id="block-toolbar">
 <header class="stack" data-space="3xs">
   <h3>toolbar</h3>
-  <p class="tone-soft measure">A row of controls over a rule, between a view's title and its content. It wraps on a narrow screen.</p>
+  <p class="tone-soft measure">A row of controls over a dotted line, between a view's title and its content. It wraps on a narrow screen.</p>
   <p class="tone-muted"><code>src/components/toolbar.css</code></p>
 </header>
 <div class="specimen-example" data-specimen="block-toolbar" data-kind="block">
@@ -982,7 +996,7 @@
   &lt;button type=&quot;button&quot; class=&quot;button&quot; data-variant=&quot;primary&quot; data-push=&quot;end&quot;&gt;Start&lt;/button&gt;
 &lt;/div&gt;</code></pre></details>
 <dl class="specimen-meta">
-<div><dt class="label">Tokens</dt><dd><code>--space-xs</code> <code>--space-m</code> <code>--space-s</code> <code>--rule</code></dd></div>
+<div><dt class="label">Tokens</dt><dd><code>--space-xs</code> <code>--space-m</code> <code>--space-s</code> <code>--dots-below</code></dd></div>
 <div><dt class="label">Do</dt><dd>Add data-push=&quot;end&quot; to the primary action to send it to the far end.</dd></div>
 <div><dt class="label">Don’t</dt><dd>Give it role=&quot;toolbar&quot;; that role promises arrow-key navigation this block does not add.</dd></div>
 </dl>

@@ -1,12 +1,12 @@
 /**
  * @block label
  * @purpose The small uppercase label: field names, column heads, section heads. With data-rule it is a
- *   section head, a label over a 1px rule.
+ *   section head, a label over a dotted line.
  * @markup
  *   <h2 class="label" {{state}}>Recent runs</h2>
  * @states
- *   data-rule — A section head: the label sits over a rule that spans its container.
- * @tokens --text-label --tracking-label --muted --space-2xs --rule
+ *   data-rule — A section head: the label sits over a dotted line that spans its container.
+ * @tokens --text-label --tracking-label --muted --space-2xs --dots-below
  * @do Put it on the element that carries the meaning: a heading for a section head, a span inside a field.
  * @dont Use it for sentences or body text; uppercase is for a few words.
  */
@@ -21,6 +21,6 @@
 
   .label[data-rule] {
     padding-block-end: var(--space-2xs);
-    border-block-end: 1px solid var(--rule);
+    background: var(--dots-below);
   }
 }

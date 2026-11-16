@@ -12,11 +12,13 @@
     --color-ink-soft: #444;
     --color-ink-muted: #6b6b6b;
     --color-ink-rule: #e0e0e0;
+    --color-ink-speck: #c2c2c2;
     --color-ink-hover: #f6f6f6;
 
     /* The dark twin: a very dark blue, with text as white at 80, 65 and 50% so it takes a little of the blue. */
     --color-night: #070a14;
     --color-night-rule: #1b2131;
+    --color-night-speck: #4a536c;
     --color-night-hover: #0e1322;
     --color-snow: rgb(255 255 255 / 0.8);
     --color-snow-soft: rgb(255 255 255 / 0.65);
